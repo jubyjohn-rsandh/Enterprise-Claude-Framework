@@ -1,4 +1,4 @@
-# RS&H CLAUDE Framework - Organizational Rules
+# RS&H Enterprise Claude Framework - Organizational Rules
 
 This file is auto-loaded at the start of every session inside the RSandH-Claude folder. It sets firm-wide behavior. Domain CLAUDE.md files extend these rules; they do not replace them.
 

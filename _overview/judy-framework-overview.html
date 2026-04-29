@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RS&amp;H CLAUDE Framework | Overview</title>
+<title>RS&amp;H Enterprise Claude Framework | Overview</title>
 <style>
   :root {
     /* RS&H brand palette */
@@ -245,7 +245,7 @@
 <body>
 
 <header>
-  <h1>RS&amp;H CLAUDE Framework</h1>
+  <h1>RS&amp;H Enterprise Claude Framework</h1>
   <span class="brand-line" aria-hidden="true">
     <svg viewBox="0 0 800 8" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -280,8 +280,12 @@
 <section id="overview" class="tab-panel active">
 
   <p class="lede">
-    The RS&amp;H CLAUDE framework is a structured way to govern, distribute, and scale Claude Code across the firm. It defines where context lives, who owns what, how skills and tools are shared, and how the firm reduces redundant token spend as licenses grow.
+    The RS&amp;H Enterprise Claude Framework is a structured way to govern, distribute, and scale Claude Code across the firm. It defines where context lives, who owns what, how skills and tools are shared, and how the firm reduces redundant token spend as licenses grow.
   </p>
+
+  <div class="callout">
+    <p><strong>Tool today, pattern forever.</strong> The current implementation is Claude Code. The framework is intentionally structured as an AI operating system rather than a Claude-only build, so the same context layers, governance, and access patterns can carry future tools (Gemini, internal models, vendor-specific agents) without rebuilding the scaffolding. Domains, memory, and access control are vendor-agnostic. Plugins, hooks, and skills are Claude Code's current vocabulary; equivalents exist in other ecosystems and the framework can absorb them.</p>
+  </div>
 
   <h2>Why this exists</h2>
 
@@ -426,11 +430,11 @@
     <tbody>
       <tr><td><strong>Enterprise</strong> (top-level)</td><td>Cross-org reports and shared content. Read access for all licensees. Hosts the firm-wide CLAUDE.md and organizational templates.</td></tr>
       <tr><td>Leadership</td><td>Executive-only content. Tighter access if it grows.</td></tr>
-      <tr><td>Finance</td><td>Established reporting suite. Heavy Claude users today.</td></tr>
-      <tr><td>Client Project Ops</td><td>Project-specific dashboards. FDOT-heavy.</td></tr>
+      <tr><td>Finance</td><td>Established reporting suite. Heavy Claude users today. Sub-domains: FP&amp;A, Accounting.</td></tr>
       <tr><td>BDO</td><td>Scaffold today. Domain Steward fills in.</td></tr>
       <tr><td>People</td><td>HR analytics, talent ops.</td></tr>
-      <tr><td><strong>Technology</strong> (pilot)</td><td>IT, security, digital, data, apps. The guinea-pig domain that gets the full first build.</td></tr>
+      <tr><td><strong>Technology</strong> (pilot)</td><td>The pilot domain. Sub-domains: IT Procurement, Cybersecurity, Technology PMO, Enterprise Applications, IT I&amp;O, Digital Practice.</td></tr>
+      <tr><td>Digital / Client Facing</td><td>Project-specific dashboards and client-facing digital work. FDOT-heavy.</td></tr>
     </tbody>
   </table>
 
@@ -460,10 +464,10 @@
     <div class="row"><span class="path">&nbsp;&nbsp;_enterprise/</span><span class="desc blue bold">Top-level shared content (everyone reads)</span></div>
     <div class="row"><span class="path">&nbsp;&nbsp;leadership/</span><span class="desc purple">Domain &middot; Executive content</span></div>
     <div class="row"><span class="path">&nbsp;&nbsp;finance/</span><span class="desc purple">Domain &middot; Established reporting suite</span></div>
-    <div class="row"><span class="path">&nbsp;&nbsp;client-project-ops/</span><span class="desc purple">Domain &middot; FDOT, project dashboards</span></div>
     <div class="row"><span class="path">&nbsp;&nbsp;bdo/</span><span class="desc purple">Domain &middot; Scaffold today</span></div>
     <div class="row"><span class="path">&nbsp;&nbsp;people/</span><span class="desc purple">Domain &middot; HR, talent ops</span></div>
     <div class="row"><span class="path">&nbsp;&nbsp;technology/</span><span class="desc amber bold">Domain &middot; Pilot, full build</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;digital-client-facing/</span><span class="desc purple">Domain &middot; Project dashboards, client-facing work</span></div>
   </div>
 
   <div class="tree-section-label">Private GitHub (Tech team edits)</div>
@@ -725,28 +729,48 @@ Leadership-Claude/  (Teams site 4)
     The seven-domain structure works for the firm today. As a domain grows, sub-teams may need their own rules, memory, and stewardship. The framework supports this through nesting. Open a session in <code>technology/data/projects/foo/</code> and four CLAUDE.md files auto-load (org, Tech, Data, project), each adding specificity, none repeating.
   </p>
 
-  <h3>Example: Tech splits into four sub-teams</h3>
-
-  <pre>technology/                       <span style="color:var(--muted);">&larr; Tech-wide rules, voice, stack</span>
-  CLAUDE.md
-  _claude/                        <span style="color:var(--muted);">&larr; shared Tech context</span>
-  data/                           <span style="color:var(--muted);">&larr; Data team sub-domain</span>
-    CLAUDE.md
-    _claude/
-    projects/
-  it/                             <span style="color:var(--muted);">&larr; IT team sub-domain</span>
-    CLAUDE.md
-    _claude/
-    projects/
-  security/                       <span style="color:var(--muted);">&larr; Security team sub-domain</span>
-    CLAUDE.md
-    _claude/
-  apps/                           <span style="color:var(--muted);">&larr; Apps team sub-domain</span>
-    CLAUDE.md
-    _claude/</pre>
+  <h3>Example: Technology's actual structure</h3>
 
   <p>
-    Hierarchical loading still works. SharePoint permissions still work (each sub-domain folder grants access to its own SharePoint group). Cross-team Tech leadership reads everything. The Data team only sees Data; the IT team only sees IT.
+    RS&amp;H Technology has six top-level sub-domains, two of which split further into sub-sub-teams. The framework supports the full structure, but with a layering recommendation to avoid going past four loaded layers.
+  </p>
+
+  <pre>technology/                                <span style="color:var(--muted);">&larr; Tech-wide rules, voice, stack</span>
+  CLAUDE.md
+  _claude/                                 <span style="color:var(--muted);">&larr; shared Tech context</span>
+  it-procurement/                          <span style="color:var(--muted);">&larr; sub-domain (full CLAUDE.md)</span>
+    CLAUDE.md
+    _claude/
+    projects/
+  cybersecurity/                           <span style="color:var(--muted);">&larr; sub-domain</span>
+    CLAUDE.md
+  technology-pmo/                          <span style="color:var(--muted);">&larr; sub-domain</span>
+    CLAUDE.md
+  enterprise-applications/                 <span style="color:var(--muted);">&larr; sub-domain (with sub-teams)</span>
+    CLAUDE.md
+    _claude/
+      rules/
+        data-analytics.md                  <span style="color:var(--muted);">&larr; path-scoped rules</span>
+        enterprise-apps.md                 <span style="color:var(--muted);">&larr; path-scoped rules</span>
+    projects/
+      data-analytics/                      <span style="color:var(--muted);">&larr; sub-team folder</span>
+      enterprise-apps/                     <span style="color:var(--muted);">&larr; sub-team folder</span>
+  it-i-o/                                  <span style="color:var(--muted);">&larr; IT Infrastructure &amp; Operations</span>
+    CLAUDE.md
+    _claude/
+      rules/
+        it-operations.md
+        service-delivery.md
+        service-delivery-technology.md
+  digital-practice/                        <span style="color:var(--muted);">&larr; sub-domain</span>
+    CLAUDE.md</pre>
+
+  <p>
+    Top-level Tech sub-domains (six of them) get their own CLAUDE.md and full Pattern 2 treatment. Sub-sub-teams (Data Analytics and Enterprise Apps under Enterprise Applications, IT Operations and Service Delivery under IT I&amp;O) use Pattern 3 path-scoped rules instead of nested CLAUDE.md files. This keeps maximum loaded layers at four (org &rarr; Tech &rarr; sub-domain &rarr; project) while still applying team-specific rules when working in that team's folder.
+  </p>
+
+  <p>
+    Hierarchical loading still works. SharePoint permissions still work: each sub-domain folder grants access to its own SharePoint group. Cross-Tech leadership reads everything. A user assigned to multiple sub-domains (for example, Julio's role spans Enterprise Apps and Data Analytics) gets multi-domain access through SharePoint group membership, not through framework configuration.
   </p>
 
   <h3>When to split a domain</h3>
@@ -1089,6 +1113,8 @@ Leadership-Claude/  (Teams site 4)
     <li><strong>Permission drift.</strong> Quarterly justify-or-rollback review of any local settings overrides.</li>
     <li><strong>OneDrive sync conflicts.</strong> Multiple editors hitting the same context file. Mitigation: per-folder edit rights via SharePoint groups, only the Domain Steward edits the domain CLAUDE.md.</li>
     <li><strong>Two-CLAUDE.md problem.</strong> Users put org content in personal CLAUDE.md. Onboarding rule plus periodic survey catches it.</li>
+    <li><strong>Cowork license bundling.</strong> The enterprise license bundles chat plus Cowork plus code. RS&amp;H has already used custom groups to disable Cowork for certain users to prevent unauthorized development. Phase 2 needs a documented access-control matrix: who gets which capability, and how that matrix is administered.</li>
+    <li><strong>Sub-domain depth.</strong> Hierarchical loading caps practically at four layers (org plus domain plus sub-domain plus project). Tech's Enterprise Applications and IT I&amp;O have sub-sub-teams. Path-scoped rules handle that without breaking the depth limit, but contributors need to understand which mechanism applies where.</li>
   </ul>
 
   <h2>Cost risk: moving too fast on Fabric</h2>
@@ -1103,7 +1129,12 @@ Leadership-Claude/  (Teams site 4)
     <li>XMLA queries that materialize full result sets when a TOPN would suffice.</li>
     <li>Long sessions that re-query the same data because earlier results fell out of context.</li>
     <li>Default model set to Opus instead of Sonnet (roughly 5x token cost for usually no quality gain in domain work).</li>
+    <li>MCP exposes a package of API endpoints. Claude picks the endpoint to call, but the underlying Fabric engine still consumes capacity units regardless of which endpoint fires. The cost lever is access control over which endpoints exist, not how Claude uses them.</li>
   </ul>
+
+  <p>
+    This integration question is gated on a Carlo conversation. Microsoft Fabric capacity decisions sit with him. The framework lays the groundwork; the cost-management policy is his call.
+  </p>
 
   <h4>Cost guardrails before Phase 2 turns on</h4>
 
@@ -1160,6 +1191,50 @@ Leadership-Claude/  (Teams site 4)
     <li>Authoring skills require explicit per-use approval through a hook.</li>
     <li>Roll to other domains after Tech proves the pattern. Finance is the natural second adopter.</li>
   </ol>
+
+  <h2>Phase 2 research backlog</h2>
+
+  <p>
+    Open research items raised during the Juby session that need investigation before or during Phase 2. None block the Phase 1 build. All inform how the framework matures.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th style="width:32%;">Research item</th><th>Why it matters</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>How RS&amp;H builds software with Claude</strong></td>
+        <td>As Claude usage moves from analysis into authoring, RS&amp;H needs a standard development workflow: agent SDK patterns, code review gates, branching conventions, testing standards. Phase 2 deliverable: an internal "build with Claude" runbook.</td>
+      </tr>
+      <tr>
+        <td><strong>How to deploy that software</strong></td>
+        <td>Codebases built with Claude need a hosting and deployment story. Single sign-on so RS&amp;H associates can use internally-built tools. Includes the question of where source lives (GitHub vs. Azure DevOps) and where built artifacts run (Azure App Service, Fabric, Power BI custom visuals, internal portals).</td>
+      </tr>
+      <tr>
+        <td><strong>GitHub vs. Azure DevOps for plugin and tool source</strong></td>
+        <td>Both work for plugin source. RS&amp;H already has Azure DevOps for Fabric Git integration. GitHub has the official Claude Enterprise marketplace path. Choice affects review workflow, CI integration, and how plugins distribute.</td>
+      </tr>
+      <tr>
+        <td><strong>Default a user's session to their domain folder</strong></td>
+        <td>Juby's question: can Cowork or Claude Code launch into a specific folder per-user (for example, Julio always opens into <code>technology/enterprise-applications/</code>)? Settings and managed-config investigation.</td>
+      </tr>
+      <tr>
+        <td><strong>MCP integration patterns beyond Fabric</strong></td>
+        <td>Pattern for connecting any AI solution to MCP servers. Today the ask is Microsoft Fabric. Tomorrow it could be ServiceNow, ADP, SharePoint, custom internal APIs. Phase 2 deliverable: an MCP onboarding pattern any team can follow.</td>
+      </tr>
+      <tr>
+        <td><strong>Cowork license-level access control</strong></td>
+        <td>Enterprise license bundles chat plus Cowork plus code. Juby has already used custom groups to disable Cowork for certain users. Need to investigate the full set of access-control levers (per-product enable/disable, custom group definitions, admin console capabilities).</td>
+      </tr>
+      <tr>
+        <td><strong>SharePoint silo verification</strong></td>
+        <td>Daunte's commitment from the meeting. Test that a user restricted to one domain folder genuinely cannot read or have Claude access another domain folder. Verify the access model behaves as designed before Phase 1 expands beyond pilots.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="meta">Carlo conversation gates the Microsoft Fabric integration approach. The other items can proceed in parallel.</p>
 
   <h2>Open questions for leadership</h2>
 
@@ -1308,7 +1383,7 @@ Leadership-Claude/  (Teams site 4)
       <rect width="800" height="4" fill="url(#rshGradient)"/>
     </svg>
   </span>
-  <p style="margin-top: 12px;">RS&amp;H CLAUDE Framework Overview &nbsp;&middot;&nbsp; Draft v1.0 &nbsp;&middot;&nbsp; Daunte Benjamin &nbsp;&middot;&nbsp; 2026-04-29</p>
+  <p style="margin-top: 12px;">RS&amp;H Enterprise Claude Framework Overview &nbsp;&middot;&nbsp; Draft v1.0 &nbsp;&middot;&nbsp; Daunte Benjamin &nbsp;&middot;&nbsp; 2026-04-29</p>
 </footer>
 
 <script>
