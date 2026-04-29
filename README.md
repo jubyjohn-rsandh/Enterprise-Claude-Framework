@@ -6,7 +6,7 @@ A structured way to govern, distribute, and scale Anthropic's Claude Code across
 
 | Path | Purpose |
 |---|---|
-| [`_overview/judy-framework-overview.html`](_overview/judy-framework-overview.html) | Executive overview document. Self-contained HTML, prints clean. The full leadership brief covering architecture, rollout, risks, and Phase 2 (Microsoft Fabric integration). |
+| [`index.html`](index.html) | Executive overview document. Self-contained HTML, prints clean. Served as the homepage when GitHub Pages is enabled. The full leadership brief covers architecture, rollout, risks, and Phase 2 (Microsoft Fabric integration). |
 | [`RSandH-Claude/`](RSandH-Claude/) | The deployable framework. Org-level rules and shared context files that auto-load every session. |
 | [`RSandH-Claude/CLAUDE.md`](RSandH-Claude/CLAUDE.md) | Firm-wide rules. Loaded at the start of every session. |
 | [`RSandH-Claude/_org/context/`](RSandH-Claude/_org/context/) | Cross-org context: brand voice, security and confidentiality, file naming and output standards. |
