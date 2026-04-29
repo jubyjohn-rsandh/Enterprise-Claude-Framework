@@ -1,0 +1,32 @@
+# Personal overrides and local-only files
+CLAUDE.local.md
+**/CLAUDE.local.md
+.claude/settings.local.json
+**/.claude/settings.local.json
+
+# Memory tier 3 (per-user, never synced)
+**/memory/users/
+
+# Common secrets
+.env
+.env.*
+*.pem
+*.key
+*_rsa
+*_rsa.pub
+secrets.json
+credentials.json
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Power BI local
+**/.pbi/localSettings.json
+**/.pbi/cache.abf

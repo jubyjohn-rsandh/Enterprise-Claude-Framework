@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RS&amp;H CLAUDE Framework | Overview</title>
+<style>
+  :root {
+    /* RS&H brand palette */
+    --ink: #103254;          /* Navy, body text */
+    --ink-soft: #415465;     /* Dark Gray, secondary text */
+    --paper: #ffffff;
+    --accent: #215eac;       /* Genuine Candor Blue, primary */
+    --accent-soft: #85c7ee;  /* Light Blue */
+    --green: #0ba89c;        /* Grit Green */
+    --plum: #a1225d;         /* Boundless Spirit Plum */
+    --golden: #eba900;       /* Golden Approachably Smart (gradient end) */
+    --muted: #71808c;        /* Dark Gray Tint 1 */
+    --rule: #cfd5d9;         /* Dark Gray Tint 2 */
+    --tint: #f0f6fc;         /* Very light blue wash */
+    --warn-tint: #fff5dd;
+    --warn-rule: #eba900;
+    --good-tint: #e8f5f3;
+    --good-rule: #0ba89c;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    background: var(--paper);
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+  }
+  header { padding-bottom: 0; margin-bottom: 8px; }
+  h1 { font-size: 32px; margin: 0 0 4px; color: var(--accent); letter-spacing: -0.01em; font-weight: 700; }
+  .brand-line { display: block; width: 100%; height: 8px; margin: 8px 0 14px; }
+  .brand-line svg { display: block; width: 100%; height: 100%; }
+  h2 { font-size: 22px; margin: 36px 0 12px; color: var(--accent); }
+  h3 { font-size: 17px; margin: 22px 0 8px; color: var(--ink); }
+  h4 { font-size: 14px; margin: 18px 0 6px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+  p, li { margin: 0 0 12px; }
+  .meta { color: var(--muted); font-size: 14px; margin: 0; }
+  .lede { font-size: 17px; line-height: 1.5; color: var(--ink); }
+
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--tint);
+    padding: 14px 18px;
+    margin: 20px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout.warn {
+    border-left-color: var(--warn-rule);
+    background: var(--warn-tint);
+  }
+  .callout.good {
+    border-left-color: var(--good-rule);
+    background: var(--good-tint);
+  }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout strong { color: var(--accent); }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 16px 0;
+    font-size: 14.5px;
+  }
+  th, td {
+    border: 1px solid var(--rule);
+    padding: 9px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: #f4f4f2; font-weight: 600; color: var(--ink); }
+  td code { font-size: 13px; }
+
+  code {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    background: #f0f0ed;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+  pre {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13.5px;
+    line-height: 1.5;
+    background: var(--tint);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 14px 18px;
+    overflow-x: auto;
+  }
+
+  /* tabs */
+  nav.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 18px 0 24px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0;
+  }
+  nav.tabs button {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 10px 14px;
+    font: inherit;
+    font-size: 14.5px;
+    color: var(--muted);
+    cursor: pointer;
+    margin-bottom: -1px;
+  }
+  nav.tabs button:hover { color: var(--accent); }
+  nav.tabs button.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+  }
+
+  section.tab-panel { display: none; }
+  section.tab-panel.active { display: block; }
+
+  /* file tree */
+  .tree {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.85;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin: 18px 0;
+  }
+  .tree .row { display: flex; align-items: center; gap: 10px; }
+  .tree .path { flex: 0 0 320px; white-space: pre; }
+  .tree .desc {
+    flex: 1;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--tint);
+    padding: 2px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--rule);
+  }
+  /* Brand-palette tints for tree categories */
+  .tree .desc.green   { background: #d3ece4; border-color: #a8dac7; }    /* Grit Green tint */
+  .tree .desc.pink    { background: #f0dde2; border-color: #e2c7cd; }    /* Plum tint */
+  .tree .desc.gray    { background: #ebebed; border-color: #cfd5d9; }    /* Light Gray */
+  .tree .desc.blue    { background: #d7eaf9; border-color: #b7dbf4; }    /* Light Blue tint */
+  .tree .desc.amber   { background: #fdedc4; border-color: #ffd47c; }    /* Golden tint */
+  .tree .desc.purple  { background: #ecd9e0; border-color: #bf768d; }    /* Plum darker tint */
+  .tree .desc.rose    { background: #f0dde2; border-color: #e2c7cd; }    /* Plum tint */
+  .tree .desc.teal    { background: #d6dde1; border-color: #cfd5d9; }    /* Dark Gray tint */
+  .tree .desc.bold { font-weight: 600; }
+
+  /* small utility */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .stat-card {
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 14px 16px;
+    background: var(--tint);
+  }
+  .stat-card .num { font-size: 26px; color: var(--accent); font-weight: 600; }
+  .stat-card .lbl { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* approach comparison cards */
+  .approach {
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 18px 20px;
+    background: var(--paper);
+  }
+  .approach.good { border-color: var(--good-rule); background: var(--good-tint); }
+  .approach.warn { border-color: var(--warn-rule); background: var(--warn-tint); }
+  .approach h3 { margin: 0 0 10px; color: var(--accent); font-size: 16px; }
+  .approach .badge {
+    display: inline-block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .approach.good .badge { background: var(--good-rule); color: white; }
+  .approach.warn .badge { background: var(--warn-rule); color: white; }
+  .approach pre {
+    font-size: 12px;
+    padding: 10px 12px;
+    margin: 8px 0 12px;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(0,0,0,0.06);
+    line-height: 1.4;
+  }
+  .approach h4 { margin: 10px 0 6px; color: var(--ink); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .approach ul { padding-left: 18px; margin: 0; }
+  .approach li { font-size: 13.5px; margin-bottom: 5px; line-height: 1.45; }
+
+  .tree-section-label {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 14px 0 6px;
+  }
+
+  ul.tight li { margin-bottom: 4px; }
+  ol.tight li { margin-bottom: 4px; }
+
+  footer {
+    margin-top: 56px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* print */
+  @media print {
+    body { font-size: 11pt; max-width: none; padding: 0; margin: 0; }
+    nav.tabs { display: none; }
+    section.tab-panel { display: block !important; page-break-before: always; }
+    section.tab-panel:first-of-type { page-break-before: auto; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, .callout, .tree { page-break-inside: avoid; }
+    a { color: inherit; text-decoration: none; }
+    a[href]:after { content: ""; }
+    .no-print { display: none; }
+    @page { margin: 0.6in; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>RS&amp;H CLAUDE Framework</h1>
+  <span class="brand-line" aria-hidden="true">
+    <svg viewBox="0 0 800 8" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="rshGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#215fac"/>
+          <stop offset="50%" stop-color="#007078"/>
+          <stop offset="85%" stop-color="#eba900"/>
+          <stop offset="100%" stop-color="#fceac5"/>
+        </linearGradient>
+      </defs>
+      <rect width="800" height="8" fill="url(#rshGradient)"/>
+    </svg>
+  </span>
+  <p class="meta">Daunte Benjamin &nbsp;&middot;&nbsp; 2026-04-29</p>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="active" data-tab="overview">Overview</button>
+  <button data-tab="architecture">Architecture</button>
+  <button data-tab="primitives">Extra Learning</button>
+  <button data-tab="rollout">Rollout</button>
+  <button data-tab="risks">Risks &amp; Lessons</button>
+  <button data-tab="next">Phase 2 &amp; Questions</button>
+  <button data-tab="appendix">Appendix</button>
+</nav>
+
+<main>
+
+<!-- ============================================================ -->
+<!-- OVERVIEW                                                      -->
+<!-- ============================================================ -->
+<section id="overview" class="tab-panel active">
+
+  <p class="lede">
+    The RS&amp;H CLAUDE framework is a structured way to govern, distribute, and scale Claude Code across the firm. It defines where context lives, who owns what, how skills and tools are shared, and how the firm reduces redundant token spend as licenses grow.
+  </p>
+
+  <h2>Why this exists</h2>
+
+  <p>
+    RS&amp;H has roughly thirty enterprise Claude licenses today and a long runway as adoption grows. Without structure, every user pastes the same context into every chat, skills drift, governance is informal, and token cost compounds. The framework replaces ad-hoc usage with shared context, on-demand skills, and per-domain ownership.
+  </p>
+
+  <div class="callout warn">
+    <p><strong>Cost of doing nothing.</strong> If we keep growing licenses without structure:</p>
+    <ul style="margin-bottom:0;">
+      <li>Every user re-pastes the same RS&amp;H context into every chat. Token spend compounds.</li>
+      <li>Skills get reinvented per user. No shared learnings, no quality gate.</li>
+      <li>Memory of past decisions evaporates between people. Same questions get re-litigated.</li>
+      <li>Permission posture drifts. Some users on safe defaults, others bypassing prompts.</li>
+      <li>New hires onboard cold. Nothing inherits between sessions or between people.</li>
+      <li>Sensitive data leaks become a question of when, not if.</li>
+    </ul>
+  </div>
+
+  <div class="grid-2">
+    <div class="stat-card">
+      <div class="num">~30</div>
+      <div class="lbl">Enterprise Claude licenses today</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">7</div>
+      <div class="lbl">Functional domains scoped (Tech is the pilot)</div>
+    </div>
+  </div>
+
+  <h2>What it does</h2>
+
+  <ul>
+    <li><strong>Educates</strong> the firm on the core primitives so users speak a common vocabulary.</li>
+    <li><strong>Reduces token spend significantly</strong> by replacing pasted-in context with auto-loaded files and on-demand skills.</li>
+    <li><strong>Sets governance</strong> so licenses do not fragment as the count grows.</li>
+    <li><strong>Scales to seven domains</strong> using one shared scaffold. Tech proves the pattern; the others adopt it.</li>
+  </ul>
+
+  <h2>What this is not</h2>
+
+  <p>Boundaries help. The framework is:</p>
+
+  <ul>
+    <li><strong>Not a chatbot for clients.</strong> Internal use only. Client-facing AI is a separate decision with separate guardrails.</li>
+    <li><strong>Not a way to bypass IT security review.</strong> Managed settings are stricter, not looser, than ad-hoc usage.</li>
+    <li><strong>Not a replacement for Power BI, SharePoint, or Microsoft Fabric.</strong> Claude reads from and works alongside those systems. It does not replace them.</li>
+    <li><strong>Not HIPAA or federally regulated-data-ready today.</strong> Claude Code is not covered under Anthropic's HIPAA Enterprise plan. Federal, FDOT, CUI, ITAR data is out of scope until a separate compliance conversation happens.</li>
+    <li><strong>Not a magic productivity multiplier.</strong> The gains come from discipline (shared context, governance, skills), not from the tool itself. Adoption requires the one-week pairing rotation and the weekly retro cadence.</li>
+    <li><strong>Not a place for unstructured personal notes.</strong> Personal preferences live in the user-level CLAUDE.md. Org content lives in the synced framework, versioned and reviewed.</li>
+  </ul>
+
+  <h2>What you'll find in this brief</h2>
+
+  <p>
+    Five tabs, each answering one question about the framework. Skim the headers below to navigate, or read straight through.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th style="width:24%;">Tab</th><th>What it covers</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Architecture</strong></td>
+        <td>The three context layers, the seven domains, the SharePoint access model, what every framework file does, and what one domain folder looks like inside.</td>
+      </tr>
+      <tr>
+        <td><strong>Extra Learning</strong></td>
+        <td>The shared vocabulary. What tools, agents, workflows, skills, hooks, memory, and plugins each mean. The WAT mental model that underpins everything.</td>
+      </tr>
+      <tr>
+        <td><strong>Rollout</strong></td>
+        <td>Phased plan from a three-to-five-person Tech pilot to org-wide. Hard gating metrics at each phase exit. Governance roles. Onboarding. Token economics.</td>
+      </tr>
+      <tr>
+        <td><strong>Risks &amp; Lessons</strong></td>
+        <td>What did not work in other large Claude rollouts (NEC, Zapier, the 50-developer playbook). Internal strain points. Phase 2 Fabric cost risk. Regulated data and the security baseline.</td>
+      </tr>
+      <tr>
+        <td><strong>Phase 2 &amp; Questions</strong></td>
+        <td>Microsoft Fabric integration plan via <code>microsoft/skills-for-fabric</code>. The open questions that need leadership direction.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Risks worth knowing now</h2>
+
+  <div class="callout warn">
+    <p>Three things to keep in front of mind. Full detail in the Risks tab.</p>
+    <ul style="margin-bottom: 0;">
+      <li><strong>Pilot discipline matters most.</strong> Orgs that fail skip phases or skip the one-week pairing rotation. We will not.</li>
+      <li><strong>Phase 2 Fabric doubles the cost meter without guardrails.</strong> Read-only first, Sonnet by default, per-user budgets, and a three-user pilot before any expansion.</li>
+      <li><strong>Claude Code is not HIPAA-covered today.</strong> Federal, FDOT, CUI, and ITAR data require a separate compliance conversation with Anthropic before exposure.</li>
+    </ul>
+  </div>
+
+  <h2>Three context layers</h2>
+
+  <table>
+    <thead>
+      <tr><th>Layer</th><th>Where it lives</th><th>Loaded when</th><th>Owner</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Org</strong></td><td><code>RSandH-Claude/CLAUDE.md</code></td><td>Every session, any subfolder</td><td>Working Group</td></tr>
+      <tr><td><strong>Domain</strong></td><td><code>&lt;domain&gt;/CLAUDE.md</code></td><td>When working inside that domain</td><td>Domain Steward</td></tr>
+      <tr><td><strong>User</strong></td><td><code>~/.claude/CLAUDE.md</code></td><td>Every session for that user</td><td>The user</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    Org rules layer on automatically. Users never have to "be at the root" for shared rules to apply. They open Claude Code wherever their work is, and the layered context arrives for free.
+  </p>
+
+  <h2>The ask of leadership</h2>
+
+  <ol>
+    <li>Confirm that <strong>Enterprise functions as the top-level shared layer</strong> (everyone sees the org-wide reports there).</li>
+    <li>Confirm <strong>Tech as the pilot domain</strong> for the first build cycle.</li>
+    <li>Approve the <strong>security baseline</strong> (Intune-deployed managed settings, including <code>disableBypassPermissionsMode</code>).</li>
+    <li>Direct on the <strong>federal and FDOT data classification policy</strong>. Claude Code is not HIPAA-covered today and federal-data exposure needs a separate Anthropic conversation.</li>
+    <li>Direct on the <strong>Microsoft Fabric integration appetite</strong> for Phase 2.</li>
+  </ol>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- ARCHITECTURE                                                  -->
+<!-- ============================================================ -->
+<section id="architecture" class="tab-panel">
+
+  <h2>The seven domains</h2>
+
+  <p>
+    The framework is organized into seven domains, mirroring how RS&amp;H already separates work and reporting today. Enterprise sits at the top as the shared layer everyone sees. The other six are peer domains, each with their own steward, context, and skills.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Domain</th><th>Role in the framework</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Enterprise</strong> (top-level)</td><td>Cross-org reports and shared content. Read access for all licensees. Hosts the firm-wide CLAUDE.md and organizational templates.</td></tr>
+      <tr><td>Leadership</td><td>Executive-only content. Tighter access if it grows.</td></tr>
+      <tr><td>Finance</td><td>Established reporting suite. Heavy Claude users today.</td></tr>
+      <tr><td>Client Project Ops</td><td>Project-specific dashboards. FDOT-heavy.</td></tr>
+      <tr><td>BDO</td><td>Scaffold today. Domain Steward fills in.</td></tr>
+      <tr><td>People</td><td>HR analytics, talent ops.</td></tr>
+      <tr><td><strong>Technology</strong> (pilot)</td><td>IT, security, digital, data, apps. The guinea-pig domain that gets the full first build.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>The access model</h2>
+
+  <p>
+    Framework files live in OneDrive and SharePoint, not in GitHub. Most RS&amp;H users do not work in Git. Folder permissions handle access: each domain folder uses Stop Inheriting Permissions and is granted to its own SharePoint group.
+  </p>
+
+  <div class="callout">
+    <p><strong>Real access control, not convention.</strong> Per Microsoft documentation, OneDrive only syncs folders a user has read access to. A Finance user with access only to the org root and the Finance folder will physically never have <code>leadership/</code> on their disk. Claude Code reads from the filesystem, so it can only see what synced. Other domains are invisible to the user and to Claude.</p>
+  </div>
+
+  <h2>What lives where, fully mapped</h2>
+
+  <p>
+    Two physical locations. The framework folder lives in OneDrive where every licensee can sync it. The plugin source lives in private GitHub because plugins benefit from PR review and the Claude Enterprise marketplace can sync directly from a private repo.
+  </p>
+
+  <div class="tree-section-label">OneDrive (synced to every licensee)</div>
+  <div class="tree">
+    <div class="row"><span class="path">RSandH-Claude/</span><span class="desc green bold">OneDrive root, synced to all licensees</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;CLAUDE.md</span><span class="desc pink bold">Firm-wide rules, auto-loaded</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;README.md</span><span class="desc gray">Onboarding entry point</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;.claude/</span><span class="desc green">Where Claude Code looks first</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;settings.json</span><span class="desc teal">Team permissions, hook registry</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;_enterprise/</span><span class="desc blue bold">Top-level shared content (everyone reads)</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;leadership/</span><span class="desc purple">Domain &middot; Executive content</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;finance/</span><span class="desc purple">Domain &middot; Established reporting suite</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;client-project-ops/</span><span class="desc purple">Domain &middot; FDOT, project dashboards</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;bdo/</span><span class="desc purple">Domain &middot; Scaffold today</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;people/</span><span class="desc purple">Domain &middot; HR, talent ops</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;technology/</span><span class="desc amber bold">Domain &middot; Pilot, full build</span></div>
+  </div>
+
+  <div class="tree-section-label">Private GitHub (Tech team edits)</div>
+  <div class="tree">
+    <div class="row"><span class="path">RSandH-Claude-Plugins/</span><span class="desc blue bold">Plugin source repo, marketplace-synced</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;rsandh-org-plugin/</span><span class="desc blue">Cross-domain skills, installed by all</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;rsandh-tech-plugin/</span><span class="desc blue">Tech skills, agents, hooks</span></div>
+  </div>
+
+  <p class="meta" style="text-align:center;">Org root syncs to all. Domain folders sync only to members of that domain's SharePoint group.</p>
+
+  <h2>What each file actually does</h2>
+
+  <p>
+    Each framework file has a narrow job. Together they replace the pasted-in context, repeated explanations, and one-off setup that eat the most time and tokens today.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th style="width:22%;">File</th><th style="width:38%;">What it does</th><th style="width:40%;">Concrete example</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong><a href="../RSandH-Claude/CLAUDE.md">Org CLAUDE.md</a></strong><br><a href="../RSandH-Claude/CLAUDE.md"><code>RSandH-Claude/CLAUDE.md</code></a></td>
+        <td>Firm-wide rules. Voice, security defaults, file naming, memory pointers. Auto-loads every session, anywhere in the framework.</td>
+        <td>A People analyst opens Claude. The org file auto-loads. Claude already knows: no em-dashes, no PII in prompts, lowercase-hyphen filenames, RS&amp;H voice.</td>
+      </tr>
+      <tr>
+        <td><strong><a href="../RSandH-Claude/_org/templates/claude-md-domain-template.md">Domain CLAUDE.md</a></strong><br><code>&lt;domain&gt;/CLAUDE.md</code></td>
+        <td>Adds domain-specific rules on top of the org rules. Auto-loads when the session is inside that domain.</td>
+        <td>Opening Claude in <code>technology/</code> adds Fabric medallion architecture conventions, snake_case SQL view rules, and the Tech vocabulary the org file does not know.</td>
+      </tr>
+      <tr>
+        <td><strong><a href="../RSandH-Claude/_org/context/brand-voice.md">brand-voice.md</a></strong></td>
+        <td>The full RS&amp;H voice spec: the four traits, the five principles, hard rules, common substitutions.</td>
+        <td>When Claude drafts a client email or proposal, it pulls this in to match RS&amp;H tone (approachably smart, genuine candor, no marketing fluff).</td>
+      </tr>
+      <tr>
+        <td><strong><a href="../RSandH-Claude/_org/context/security-and-confidentiality.md">security-and-<br>confidentiality.md</a></strong></td>
+        <td>What can and cannot appear in prompts, memory, or skill outputs. PII, FDOT, CUI, ITAR, HIPAA, credentials. Escalation paths.</td>
+        <td>When a prompt approaches a regulated-data boundary, Claude consults this file before continuing. The PII pre-prompt hook also reads from here.</td>
+      </tr>
+      <tr>
+        <td><strong><a href="../RSandH-Claude/_org/context/file-naming-and-output-standards.md">file-naming-and-<br>output-standards.md</a></strong></td>
+        <td>Naming conventions, default output formats by deliverable type, SQL/Python/DAX style defaults.</td>
+        <td>When Claude saves a new file, it picks the right extension and lowercase-hyphen name. SQL queries land in <code>.sql</code>, not pasted into a Word doc.</td>
+      </tr>
+      <tr>
+        <td><strong><a href="../RSandH-Claude/_org/templates/">Templates</a></strong><br><a href="../RSandH-Claude/_org/templates/"><code>_org/templates/</code></a></td>
+        <td>Starter scaffolds for new domains and new skills. Includes <a href="../RSandH-Claude/_org/templates/claude-md-domain-template.md">domain CLAUDE.md template</a> and <a href="../RSandH-Claude/_org/templates/skill-template/SKILL.md">skill SKILL.md template</a>.</td>
+        <td>A new Domain Steward in BDO copies the domain template, fills in five placeholder sections, and is operational in five minutes.</td>
+      </tr>
+      <tr>
+        <td><strong>Settings</strong><br><code>.claude/settings.json</code> + Intune managed</td>
+        <td>Tool permissions, default model, hook registry. Enforced firm-wide via Intune so users cannot override.</td>
+        <td>Asks before Edit, Write, or Bash outside the allowlist. Defaults to Sonnet (cheaper than Opus). Blocks <code>--dangerously-skip-permissions</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Plugins</strong><br><code>rsandh-org-plugin</code>, <code>rsandh-tech-plugin</code></td>
+        <td>Bundle skills, slash commands, hooks, agents, and MCP servers into one installable package. Update once, every licensee benefits.</td>
+        <td>A new Tech hire runs <code>/plugin install rsandh-tech-plugin</code> and inherits <code>/postmortem</code>, <code>/adr</code>, the <code>researcher</code> agent, and the PII scan hook.</td>
+      </tr>
+      <tr>
+        <td><strong>Memory</strong><br><code>memory/shared.md</code>, <code>archive/</code>, <code>users/</code></td>
+        <td>Persistent context across sessions. Three tiers: curated <code>shared.md</code> (auto-loaded), quarterly archives (on-demand), personal notes (local only).</td>
+        <td>The Direct Lake migration decision made last quarter lives in Tech's <code>shared.md</code>. Every Tech session inherits it. Nobody re-litigates the choice.</td>
+      </tr>
+      <tr>
+        <td><strong>Personal CLAUDE.md</strong><br><code>~/.claude/CLAUDE.md</code></td>
+        <td>User-level preferences only: verbosity, default model, output style. Personal, not synced.</td>
+        <td>A user prefers terse responses with no end-of-turn summary. They set that here. <strong>No RS&amp;H content goes in this file</strong>; org content belongs in the synced framework.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <p><strong>The pattern.</strong> Three layers (Org, Domain, User) load automatically every session. Skills, scripts, and templates load on demand. Settings and hooks enforce policy without burning a Claude turn. The result is that users open Claude, type their actual question, and the framework provides the rest.</p>
+  </div>
+
+  <h2>Single root folder vs. separate Teams workspaces</h2>
+
+  <p>
+    Two ways to physically organize the framework. The single-root model is the recommendation. The alternative, one Teams workspace per domain, doubles the admin surface and breaks the hierarchical loading that makes the framework work.
+  </p>
+
+  <div class="grid-2">
+    <div class="approach good">
+      <span class="badge">Recommended</span>
+      <h3>Single root folder, seven subfolders</h3>
+      <pre>RSandH-Claude/
+  CLAUDE.md          &larr; org rules
+  _enterprise/       &larr; shared
+  technology/
+  finance/
+  people/
+  ... (7 domains)</pre>
+      <h4>What it gets right</h4>
+      <ul>
+        <li>One OneDrive folder, one sync target.</li>
+        <li>Hierarchical CLAUDE.md works. Org rules and domain rules layer automatically.</li>
+        <li>SharePoint per-folder permissions handle real access control. Other domains are invisible to users who do not belong.</li>
+        <li>One admin surface. Update root CLAUDE.md once, all licensees get it.</li>
+        <li>Cross-domain users handled by SharePoint group membership.</li>
+      </ul>
+    </div>
+
+    <div class="approach warn">
+      <span class="badge">Costs more</span>
+      <h3>Seven separate Teams workspaces</h3>
+      <pre>Tech-Claude/        (Teams site 1)
+Finance-Claude/     (Teams site 2)
+People-Claude/      (Teams site 3)
+Leadership-Claude/  (Teams site 4)
+... (7 sites total)</pre>
+      <h4>What it costs</h4>
+      <ul>
+        <li>Seven Teams sites to provision, govern, and maintain.</li>
+        <li>Hierarchical loading does not cross sites. Org rules must be copied into each site and stay in sync manually.</li>
+        <li>Org-wide updates fan out to seven places. Drift becomes the default state.</li>
+        <li>Cross-domain users juggle multiple workspaces and permissions.</li>
+        <li>Seven admin surfaces means more work for the Working Group every quarter.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout good">
+    <p><strong>Recommendation.</strong> Single root, seven subfolders, SharePoint permissions per folder. Same access control as separate sites, far less admin overhead, and the hierarchical CLAUDE.md model only works in this shape.</p>
+  </div>
+
+  <h2>Inside a domain: what Technology looks like</h2>
+
+  <p>
+    Every domain follows the same shape. Technology gets it filled in (the pilot domain). The other six start as scaffolds that the Domain Steward fills in over Phase 1 and 2. When an associate opens Claude Code inside <code>technology/</code>, this is the structure on disk.
+  </p>
+
+  <div class="tree">
+    <div class="row"><span class="path">technology/</span><span class="desc green bold">Domain root</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;CLAUDE.md</span><span class="desc pink bold">Domain rules, auto-loads on top of org rules</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;README.md</span><span class="desc gray">Onboarding entry point for new Tech licensees</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;_claude/</span><span class="desc green bold">Claude Code config for this domain</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;context/</span><span class="desc blue bold">Reference files Claude pulls in on relevance</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tech-stack.md</span><span class="desc blue">Tool inventory: Fabric, Power BI, etc.</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coding-and-config-standards.md</span><span class="desc blue">SQL, Python, DAX style for Tech</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;review-rubric.md</span><span class="desc blue">How Tech reviews code and pipelines</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;incident-response.md</span><span class="desc blue">Postmortem format and escalation</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;adr-conventions.md</span><span class="desc blue">Architecture Decision Record format</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;runbook-index.md</span><span class="desc blue">Pointer to active runbooks</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data-handling-and-pii.md</span><span class="desc blue">Tech-specific data classification</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;memory/</span><span class="desc amber bold">Persistent context across sessions</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared.md</span><span class="desc amber">Curated, auto-loads. Steward-edited only.</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;archive/</span><span class="desc amber">Quarterly raw append-only memory</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2026-Q2.md</span><span class="desc amber">Current quarter</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;users/</span><span class="desc gray">Personal scratchpad, local only, not synced</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;skills-local/</span><span class="desc purple bold">Domain-only skills, pre-promotion</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;projects/</span><span class="desc green bold">Active work in this domain</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;_template/</span><span class="desc gray">Scaffold copied for each new project</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLAUDE.md</span><span class="desc pink">Project rules template</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;DA0012-backlog/</span><span class="desc green">Real project example</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLAUDE.md</span><span class="desc pink">Project-specific rules</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_planning/</span><span class="desc gray">Specs, briefings, plans</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_overview/</span><span class="desc gray">Executive artifacts (HTML, slides)</span></div>
+    <div class="row"><span class="path">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[work files]</span><span class="desc gray">SQL, Python, notebooks, docs</span></div>
+  </div>
+
+  <h3>What each subfolder is for</h3>
+
+  <table>
+    <thead>
+      <tr><th style="width:25%;">Subfolder</th><th>What lives here and why</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>CLAUDE.md</code> (domain root)</td>
+        <td>The domain's identity, scope, key tools, key stakeholders. Loads on top of the org CLAUDE.md every session in this domain. The Domain Steward owns this file.</td>
+      </tr>
+      <tr>
+        <td><code>_claude/context/</code></td>
+        <td>Reference files Claude pulls in when relevant. Tech stack, coding standards, review rubric, incident format. Each file is short and focused. Claude reads only what it needs.</td>
+      </tr>
+      <tr>
+        <td><code>_claude/memory/shared.md</code></td>
+        <td>The domain's distilled knowledge. Decisions, conventions, gotchas worth remembering forever. Auto-loads every session. The Domain Steward distills this monthly from the archive.</td>
+      </tr>
+      <tr>
+        <td><code>_claude/memory/archive/</code></td>
+        <td>Append-only quarterly logs. Anyone in the domain can append. Loads on demand via <code>/memory-search</code>. Rolls over each quarter.</td>
+      </tr>
+      <tr>
+        <td><code>_claude/memory/users/</code></td>
+        <td>Per-user scratchpad. Not synced via OneDrive. Use it for personal notes and in-flight context that does not belong to the team.</td>
+      </tr>
+      <tr>
+        <td><code>_claude/skills-local/</code></td>
+        <td>Skills the domain is trying out before promoting to the plugin. Anyone in the domain can drop a skill here. After three real uses and Domain Steward review, it can be promoted.</td>
+      </tr>
+      <tr>
+        <td><code>projects/</code></td>
+        <td>The actual work. One subfolder per project. Each project has its own <code>CLAUDE.md</code> for project-specific rules (deadlines, stakeholders, scope notes).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <p><strong>What an associate experiences.</strong> A Tech analyst opens Claude Code in <code>technology/projects/DA0012-backlog/</code>. Three CLAUDE.md files auto-load in order: org, Tech, project. Tech's <code>shared.md</code> memory loads. Tech's coding standards load when the analyst writes SQL. Tech's PII rules load when the prompt mentions a project code. The analyst types one question and gets an answer that respects every layer of context above.</p>
+  </div>
+
+  <h3>Layered loading, visualized</h3>
+
+  <p>
+    The flow when an associate opens Claude inside a domain. Every layer auto-loads. The user does nothing.
+  </p>
+
+  <div style="margin: 18px 0;">
+    <svg viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" style="display:block; width:100%; max-width:720px; margin:0 auto;" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, sans-serif">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#415465"/>
+        </marker>
+      </defs>
+
+      <rect x="120" y="15" width="480" height="55" rx="4" fill="#ebebed" stroke="#cfd5d9" stroke-width="1.5"/>
+      <text x="360" y="38" text-anchor="middle" font-size="13" fill="#103254" font-weight="600">Associate opens Claude Code in</text>
+      <text x="360" y="58" text-anchor="middle" font-size="13" fill="#215eac" font-family="ui-monospace, Consolas, Menlo, monospace">technology/projects/DA0012-backlog/</text>
+
+      <line x1="360" y1="75" x2="360" y2="100" stroke="#415465" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <rect x="60" y="105" width="600" height="55" rx="4" fill="#d7eaf9" stroke="#215eac" stroke-width="1.5"/>
+      <text x="80" y="128" font-size="13" fill="#103254" font-weight="600">1. Org CLAUDE.md auto-loads</text>
+      <text x="80" y="148" font-size="12" fill="#415465">Voice, security, naming, memory pointers. Firm-wide rules apply everywhere.</text>
+
+      <line x1="360" y1="165" x2="360" y2="185" stroke="#415465" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <rect x="60" y="190" width="600" height="55" rx="4" fill="#d3ece4" stroke="#0ba89c" stroke-width="1.5"/>
+      <text x="80" y="213" font-size="13" fill="#103254" font-weight="600">2. Tech domain CLAUDE.md auto-loads</text>
+      <text x="80" y="233" font-size="12" fill="#415465">Fabric medallion architecture, snake_case SQL, Tech vocabulary the org file does not know.</text>
+
+      <line x1="360" y1="250" x2="360" y2="270" stroke="#415465" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <rect x="60" y="275" width="600" height="55" rx="4" fill="#f0dde2" stroke="#a1225d" stroke-width="1.5"/>
+      <text x="80" y="298" font-size="13" fill="#103254" font-weight="600">3. Project CLAUDE.md auto-loads</text>
+      <text x="80" y="318" font-size="12" fill="#415465">DA0012-specific scope, deadline, stakeholder list, in-flight decisions.</text>
+
+      <line x1="360" y1="335" x2="360" y2="355" stroke="#415465" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <rect x="60" y="360" width="600" height="55" rx="4" fill="#fdedc4" stroke="#eba900" stroke-width="1.5"/>
+      <text x="80" y="383" font-size="13" fill="#103254" font-weight="600">4. Tech shared memory auto-loads</text>
+      <text x="80" y="403" font-size="12" fill="#415465">Distilled decisions and conventions from prior sessions in this domain.</text>
+
+      <line x1="360" y1="420" x2="360" y2="438" stroke="#415465" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <rect x="120" y="443" width="480" height="32" rx="4" fill="#e8f5f3" stroke="#0ba89c" stroke-width="1.5"/>
+      <text x="360" y="464" text-anchor="middle" font-size="13" fill="#103254" font-weight="600">Associate types one question. The framework provides the rest.</text>
+    </svg>
+  </div>
+
+  <h2>Scaling: nested sub-domains</h2>
+
+  <p>
+    The seven-domain structure works for the firm today. As a domain grows, sub-teams may need their own rules, memory, and stewardship. The framework supports this through nesting. Open a session in <code>technology/data/projects/foo/</code> and four CLAUDE.md files auto-load (org, Tech, Data, project), each adding specificity, none repeating.
+  </p>
+
+  <h3>Example: Tech splits into four sub-teams</h3>
+
+  <pre>technology/                       <span style="color:var(--muted);">&larr; Tech-wide rules, voice, stack</span>
+  CLAUDE.md
+  _claude/                        <span style="color:var(--muted);">&larr; shared Tech context</span>
+  data/                           <span style="color:var(--muted);">&larr; Data team sub-domain</span>
+    CLAUDE.md
+    _claude/
+    projects/
+  it/                             <span style="color:var(--muted);">&larr; IT team sub-domain</span>
+    CLAUDE.md
+    _claude/
+    projects/
+  security/                       <span style="color:var(--muted);">&larr; Security team sub-domain</span>
+    CLAUDE.md
+    _claude/
+  apps/                           <span style="color:var(--muted);">&larr; Apps team sub-domain</span>
+    CLAUDE.md
+    _claude/</pre>
+
+  <p>
+    Hierarchical loading still works. SharePoint permissions still work (each sub-domain folder grants access to its own SharePoint group). Cross-team Tech leadership reads everything. The Data team only sees Data; the IT team only sees IT.
+  </p>
+
+  <h3>When to split a domain</h3>
+
+  <table>
+    <thead>
+      <tr><th style="width:42%;">Sub-team profile</th><th>Recommended pattern</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>More than 20 people, own steward, own data classification posture</td><td><strong>Nested sub-domain.</strong> Full CLAUDE.md, context, memory, skills.</td></tr>
+      <tr><td>10 to 20 people, shares most rules, distinct on a few</td><td><strong>Path-scoped rules</strong> in <code>_claude/rules/</code>. Loads only when working in that team's files.</td></tr>
+      <tr><td>Fewer than 10 people, mostly shared rules</td><td><strong>Do not split yet.</strong> Add to <code>shared.md</code> in the parent domain.</td></tr>
+      <tr><td>Almost no shared content with the parent</td><td><strong>Peer domain.</strong> Promote out of the parent into its own top-level domain folder.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <p><strong>Practical limit on nesting.</strong> Three to four layers (org + domain + sub-domain + project) before context loading gets noisy and contributors lose track of which rules live where. Do not nest deeper without a strong reason. If a sub-team needs its own sub-sub-domain, that is a signal it should probably promote to a peer domain.</p>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- EXTRA LEARNING                                                -->
+<!-- ============================================================ -->
+<section id="primitives" class="tab-panel">
+
+  <h2>The mental model: WAT</h2>
+
+  <p>
+    Claude Code is composed of three primitives that combine to do useful work. When someone asks "is that a workflow, an agent, or a tool?" they are using the WAT lens to figure out what kind of thing they are looking at.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Primitive</th><th>What it is</th><th>One-line summary</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Workflow</strong></td><td>A repeatable parameterized procedure</td><td>The recipe</td></tr>
+      <tr><td><strong>Agent</strong></td><td>A specialized role with isolated context</td><td>The worker</td></tr>
+      <tr><td><strong>Tool</strong></td><td>A capability Claude can call</td><td>The verb</td></tr>
+    </tbody>
+  </table>
+
+  <p>To these, three pieces of glue and one wrapper.</p>
+
+  <table>
+    <thead>
+      <tr><th>Glue</th><th>What it is</th><th>One-line summary</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Skill</strong></td><td>On-demand knowledge or workflow</td><td>The reference</td></tr>
+      <tr><td><strong>Hook</strong></td><td>Deterministic automation around events</td><td>The policy</td></tr>
+      <tr><td><strong>Memory</strong></td><td>Persistent context across sessions</td><td>The institutional knowledge</td></tr>
+      <tr><td><strong>Plugin</strong></td><td>Bundled, distributable package</td><td>The container</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Tool</h2>
+  <p>
+    A specific capability Claude can call. Tools are atomic. They do one thing and return a result. Tools come from three sources: built-in, Model Context Protocol (MCP) servers (extensions like a Microsoft Fabric or SharePoint integration), and custom tools built via the Agent SDK.
+  </p>
+
+  <p>The built-in tools, in plain language:</p>
+
+  <table>
+    <thead>
+      <tr><th style="width:22%;">Tool</th><th>What it does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>Read</code></td><td>Open a file and read its contents.</td></tr>
+      <tr><td><code>Write</code></td><td>Create a new file.</td></tr>
+      <tr><td><code>Edit</code></td><td>Modify an existing file in place.</td></tr>
+      <tr><td><code>Bash</code></td><td>Run a shell command (for example, <code>git status</code>, <code>python script.py</code>).</td></tr>
+      <tr><td><code>Grep</code></td><td>Search for text patterns inside files. Like Find, but powerful and fast.</td></tr>
+      <tr><td><code>Glob</code></td><td>Find files by name pattern (for example, all <code>.sql</code> files in a folder).</td></tr>
+      <tr><td><code>WebFetch</code></td><td>Fetch a web URL and return its contents.</td></tr>
+    </tbody>
+  </table>
+
+  <p><em>Mental model: a verb. What Claude can do.</em></p>
+
+  <h2>Agent</h2>
+  <p>
+    A specialized role with its own context window and tool access. The main agent is the session a user talks to. A subagent is invoked for a specific job, runs in a fresh context, and returns a summary. Subagents prevent stale context buildup: exploration and research do not pollute the main thread.
+  </p>
+  <p><em>Mental model: a specialized worker. Who is doing the job.</em></p>
+
+  <h2>Workflow</h2>
+  <p>
+    A parameterized procedure. In Claude Code, workflows show up as slash commands. A user types <code>/adr "Postgres 16 upgrade"</code> and Claude follows the recipe. Common RS&amp;H Tech examples: <code>/adr</code>, <code>/postmortem</code>, <code>/handoff</code>, <code>/runbook</code>, <code>/change</code>.
+  </p>
+  <p><em>Mental model: the recipe. How to do a specific common task.</em></p>
+
+  <h2>Skill</h2>
+  <p>
+    On-demand knowledge or a workflow that Claude pulls in when relevant. Skills live in <code>.claude/skills/&lt;name&gt;/SKILL.md</code> and can include reference material, scripts, and assets. Two flavors: knowledge skills (auto-surfaced when relevant) and workflow skills (invoked explicitly or by Claude). Anthropic is consolidating around skills as the dominant abstraction.
+  </p>
+
+  <h4>Skill vs. tool vs. agent</h4>
+  <ul class="tight">
+    <li>A <strong>tool</strong> is atomic: <code>Read</code> a file.</li>
+    <li>A <strong>skill</strong> is higher level: knowledge or a recipe that uses multiple tools.</li>
+    <li>An <strong>agent</strong> is a sub-Claude that runs in its own context.</li>
+    <li>A skill might tell Claude "use this approach"; an agent <em>is</em> another Claude doing the work.</li>
+  </ul>
+
+  <h2>Hook</h2>
+  <p>
+    A script that fires automatically on a specific event. No Claude reasoning involved. Hooks are deterministic and fire one hundred percent of the time. Use a hook when "this must happen, no exceptions" (PII scanning, audit logging). Use a skill when "this is how we usually do it" (judgment is wanted).
+  </p>
+
+  <table>
+    <thead><tr><th>Event</th><th>Fires when</th></tr></thead>
+    <tbody>
+      <tr><td><code>PreToolUse</code></td><td>Before any tool call. Best for policy checks, PII redaction.</td></tr>
+      <tr><td><code>PostToolUse</code></td><td>After any tool call. Best for audit logging.</td></tr>
+      <tr><td><code>OnPromptSubmit</code></td><td>When a user submits a prompt. Best for prompt-level scanning.</td></tr>
+      <tr><td><code>OnStop</code></td><td>When the session ends. Best for final audit log entries.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Memory and CLAUDE.md</h2>
+  <p>
+    <code>CLAUDE.md</code> holds always-loaded context. Claude Code reads it at session start, and the prompt cache holds it for about five minutes, so subsequent turns read it at roughly ten percent of the original input cost. Memory is persistent context across sessions. RS&amp;H uses a three-tier memory pattern (curated <code>shared.md</code>, quarterly archives, per-user scratchpad) so a single file does not become unmanageable as users grow.
+  </p>
+
+  <h2>Plugin</h2>
+  <p>
+    A package that bundles skills, slash commands, hooks, agents, and MCP servers into one installable unit. Plugins are how the framework distributes capability. Update once; every licensee benefits. The RS&amp;H framework ships two plugins: one cross-domain (<code>rsandh-org-plugin</code>) and one Tech-specific (<code>rsandh-tech-plugin</code>). Source lives in private GitHub; distribution flows through the Claude Enterprise marketplace.
+  </p>
+
+  <h2>Concrete example: how the pieces fit</h2>
+
+  <p>A Tech user types <code>/postmortem</code> after an outage:</p>
+
+  <ol class="tight">
+    <li>The slash command (a workflow) lives in <code>rsandh-tech-plugin/commands/postmortem.md</code>.</li>
+    <li>It activates the <code>incident-postmortem</code> skill in the same plugin.</li>
+    <li>The skill says: first use the <code>researcher</code> agent to gather the timeline from logs and chat history, then walk through the postmortem template, then save the result to the Tech memory archive.</li>
+    <li>The <code>researcher</code> agent runs in its own isolated context. It uses tools (<code>Read</code>, <code>Grep</code>, <code>Bash</code>) to find data and returns a 300-word summary.</li>
+    <li>The main Claude takes that summary, fills the postmortem template using format conventions loaded from the Tech CLAUDE.md, and produces the final document.</li>
+    <li>A hook (<code>on-stop-audit-log.sh</code>) fires when the session ends and writes a session entry to the audit log.</li>
+  </ol>
+
+  <p>The user typed five characters. The framework did the rest.</p>
+
+  <div class="callout good">
+    <p><strong>The whole point.</strong> Tools are the hands. Agents are the brains. Workflows are the recipes. Skills are the knowledge. Hooks are the policy. Plugins are the package. CLAUDE.md is the always-loaded foundation.</p>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- ROLLOUT                                                       -->
+<!-- ============================================================ -->
+<section id="rollout" class="tab-panel">
+
+  <h2>The first 30 days, concretely</h2>
+
+  <p>
+    What happens if leadership greenlights this on Wednesday. The framework moves from spec to running pilot inside one month.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th style="width:18%;">Window</th><th style="width:32%;">What happens</th><th>Who does it</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Week 1<br>(Build)</strong></td>
+        <td>Org CLAUDE.md and Tech CLAUDE.md filled in. Six other domain scaffolds created. Two starter plugins bootstrapped (<code>rsandh-org-plugin</code>, <code>rsandh-tech-plugin</code>). Intune managed-settings rollout scheduled with IT.</td>
+        <td>Daunte builds. IT scopes the Intune deployment.</td>
+      </tr>
+      <tr>
+        <td><strong>End of Week 1</strong></td>
+        <td>Working Group named (3 members). Three to five Tech pilot users identified. Brand voice, security, and naming context files reviewed and approved.</td>
+        <td>Leadership confirms Working Group. Daunte identifies pilots.</td>
+      </tr>
+      <tr>
+        <td><strong>Week 2<br>(Pilot start)</strong></td>
+        <td>Pilots onboard one by one (30-min session each). Pilot Slack or Teams channel opens. First weekly retro on Friday.</td>
+        <td>Daunte runs onboarding. Pilots test daily.</td>
+      </tr>
+      <tr>
+        <td><strong>Week 3<br>(Pilot iterate)</strong></td>
+        <td>Tech <code>shared.md</code> memory starts accumulating real entries. First skill promoted from local to plugin. First pilot retro feedback applied.</td>
+        <td>Pilots use it. Daunte distills.</td>
+      </tr>
+      <tr>
+        <td><strong>Week 4<br>(Pilot exit)</strong></td>
+        <td>Phase 2 exit metric checked: 80% of pilots used the framework three or more times per week. If yes, Phase 3 (department) opens. If no, hold and diagnose.</td>
+        <td>Working Group reviews metric.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <p><strong>What leadership commits to.</strong> Approve the build window. Confirm Working Group seats (three names). Direct on the regulated-data classification question. Identify three to five Tech pilot users from current heavy Claude users. Total time commitment for the CTO over the month: under two hours.</p>
+  </div>
+
+  <h2>Phased rollout</h2>
+
+  <p>
+    Pacing follows industry-validated patterns from large-scale Claude rollouts. Each phase has a hard exit metric. Skipping phases is the most common cause of failed rollouts. RS&amp;H does not skip phases.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Phase</th><th>Window</th><th>Scope</th><th>Exit criteria</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>0. Foundations</strong></td><td>Now</td><td>Framework explainer + this overview</td><td>Leadership review locks the architecture</td></tr>
+      <tr><td><strong>1. Build</strong></td><td>Days 1-7</td><td>Org files, Tech full build, six other domain scaffolds, two plugins, managed settings via Intune</td><td>All files exist, plugins build, hooks pass smoke test</td></tr>
+      <tr><td><strong>2. Pilot</strong></td><td>Weeks 2-3</td><td>Three to five hand-picked Tech users</td><td>Eighty percent of pilots use it three or more times per week</td></tr>
+      <tr><td><strong>3. Department</strong></td><td>Weeks 4-5</td><td>Ten to twenty Tech users</td><td>Seventy percent weekly active. Pilot members pair with new cohort.</td></tr>
+      <tr><td><strong>4. Cross-department</strong></td><td>Weeks 6-7</td><td>Tech plus early Finance adopters</td><td>Sixty percent weekly active. Satisfaction at or above seven out of ten.</td></tr>
+      <tr><td><strong>5. Org-wide</strong></td><td>Week 8+</td><td>All current licensees</td><td>Fifty-five percent sustained for four weeks. Self-service onboarding works.</td></tr>
+      <tr><td><strong>6. Measurement</strong></td><td>Week 9 onward</td><td>Token telemetry through the Compliance API</td><td>Real savings versus baseline measured. Quarterly read-out.</td></tr>
+      <tr><td><strong>7. Second domain</strong></td><td>Q3 2026</td><td>Likely Finance</td><td>Next plugin built using shared org templates</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Governance roles</h2>
+
+  <table>
+    <thead><tr><th>Role</th><th>Responsibility</th><th>Headcount</th><th>Nominee</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Working Group</strong></td><td>Owns settings, hooks, plugin marketplace, framework evolution</td><td>3</td><td>[Placeholder &middot; confirmed Phase 1]</td></tr>
+      <tr><td><strong>Domain Steward</strong></td><td>Owns the domain CLAUDE.md, curates memory, approves skill promotions</td><td>1 per domain</td><td>[Placeholder &middot; one nominee per domain]</td></tr>
+      <tr><td><strong>Plugin Maintainers</strong></td><td>Author and maintain individual plugins</td><td>2-4 part-time</td><td>[Placeholder]</td></tr>
+      <tr><td><strong>Onboarding Buddy</strong></td><td>Walks new licensees through the 30-minute onboarding</td><td>Rotating</td><td>[Placeholder]</td></tr>
+    </tbody>
+  </table>
+
+  <p class="meta">
+    Specific nominees are confirmed during Phase 1. The framework needs three Working Group members (one Tech representative, one Security or IT representative, one cross-org coordinator) and one Domain Steward per domain. Names go in this table once leadership confirms.
+  </p>
+
+  <h2>30-minute onboarding</h2>
+
+  <ol class="tight">
+    <li>Install Claude Code and sign in.</li>
+    <li>Confirm OneDrive sync of the RSandH-Claude folder is up.</li>
+    <li>Install the org plugin and the relevant domain plugin from the marketplace.</li>
+    <li>Read the org onboarding checklist (5 min).</li>
+    <li>Skim the org CLAUDE.md and the domain CLAUDE.md (5 min).</li>
+    <li>Run a guided first session: produce a test ADR to confirm everything loads.</li>
+    <li>Subscribe to the framework feedback channel.</li>
+  </ol>
+
+  <h2>Token economics</h2>
+
+  <p>
+    The framework reduces input-token spend significantly across steady-state work. The mechanisms:
+  </p>
+
+  <div class="callout">
+    <p><strong>One illustrative number.</strong> Today, roughly 30 users each paste a 500-token "RS&amp;H is..." context blurb at the start of about 10 chats per day. That is roughly 150,000 redundant tokens per day, before anyone has asked a real question. Org CLAUDE.md auto-loading eliminates that line item entirely. As licenses grow, the savings scale linearly.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Mechanism</th><th>What it replaces</th><th>Why it saves tokens</th></tr></thead>
+    <tbody>
+      <tr><td>CLAUDE.md auto-load</td><td>Pasting "RS&amp;H is..." into every chat</td><td>Loaded once, prompt-cached for ~5 min, then ~10% of input cost on subsequent turns</td></tr>
+      <tr><td>Skills (on-demand)</td><td>Pasting procedures inline every time</td><td>Zero tokens until invoked</td></tr>
+      <tr><td>Plugins (org distribution)</td><td>Personal copies that drift</td><td>One source, one update reaches every user</td></tr>
+      <tr><td>Hooks (deterministic)</td><td>Asking Claude to do the rote thing</td><td>Hook fires automatically, no turn spent prompting</td></tr>
+      <tr><td>Subagents (isolated context)</td><td>Letting exploration pollute the main session</td><td>Subagents return summaries only</td></tr>
+      <tr><td>Distilled memory</td><td>Re-litigating decisions in chat</td><td>Decide once, remember forever</td></tr>
+    </tbody>
+  </table>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- RISKS & LESSONS                                               -->
+<!-- ============================================================ -->
+<section id="risks" class="tab-panel">
+
+  <h2>Research findings: what did not work in other rollouts</h2>
+
+  <p>
+    These are the recurring failure modes from large-scale Claude rollouts (NEC at 30,000 employees with vertical-specific training, Zapier with 800-plus internal Claude agents, the systemprompt.io 50-developer playbook). Every one of these has a named mitigation in the RS&amp;H design.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Failure mode</th><th>What it looks like in practice</th><th>RS&amp;H mitigation</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Over-restriction</strong></td>
+        <td>Users have to approve every file read. Tool gets abandoned within a day.</td>
+        <td>Default to <code>acceptEdits</code> mode. Conservative permissions on writes only.</td>
+      </tr>
+      <tr>
+        <td><strong>No training</strong></td>
+        <td>Users do not know what skills exist. Revert to raw chat. Cancel licenses.</td>
+        <td>One-hour hands-on onboarding per cohort. Pilot members pair with new users for week one.</td>
+      </tr>
+      <tr>
+        <td><strong>Missing CLAUDE.md standards</strong></td>
+        <td>Claude behaves inconsistently across teams. Users lose trust.</td>
+        <td>Shared org CLAUDE.md as parent. Domain CLAUDE.md extends, never replaces.</td>
+      </tr>
+      <tr>
+        <td><strong>No feedback loop</strong></td>
+        <td>Pilot complaints get ignored. Adoption stalls.</td>
+        <td>Weekly 15-minute pilot retro for the first four weeks.</td>
+      </tr>
+      <tr>
+        <td><strong>Skipped phases</strong></td>
+        <td>Rush from pilot to org-wide. Support structure is not there. Quality collapses.</td>
+        <td>Hard gating metric at each phase exit (3+ sessions per week, 70%+ weekly active, etc.).</td>
+      </tr>
+      <tr>
+        <td><strong>No named owner post-launch</strong></td>
+        <td>Managed settings file goes stale 90 days after rollout. No one notices.</td>
+        <td>Working Group is the named owner. Quarterly review on the calendar.</td>
+      </tr>
+      <tr>
+        <td><strong>Org content in personal CLAUDE.md</strong></td>
+        <td>Users put RS&amp;H context in <code>~/.claude/CLAUDE.md</code>. Drifts, leaks, no version control.</td>
+        <td>Onboarding rule: personal CLAUDE.md is preferences only. Periodic survey to spot drift.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <p><strong>The single line.</strong> Orgs that fail rush past pilot before the one-week pairing discipline takes hold. Orgs that succeed treat the framework as infrastructure, not a tool, and name an owner.</p>
+  </div>
+
+  <h2>Where this strains internally</h2>
+
+  <ul class="tight">
+    <li><strong>Plugin release cadence vs. urgent fixes.</strong> Domain Stewards need a documented hotfix path.</li>
+    <li><strong>Memory curation drift.</strong> Monthly distillation must be calendared and owned by name.</li>
+    <li><strong>Skill sprawl.</strong> Quarterly audit. Fewer than three users on a local skill means deprecate or merge.</li>
+    <li><strong>Permission drift.</strong> Quarterly justify-or-rollback review of any local settings overrides.</li>
+    <li><strong>OneDrive sync conflicts.</strong> Multiple editors hitting the same context file. Mitigation: per-folder edit rights via SharePoint groups, only the Domain Steward edits the domain CLAUDE.md.</li>
+    <li><strong>Two-CLAUDE.md problem.</strong> Users put org content in personal CLAUDE.md. Onboarding rule plus periodic survey catches it.</li>
+  </ul>
+
+  <h2>Cost risk: moving too fast on Fabric</h2>
+
+  <div class="callout warn">
+    <p><strong>The doubling concern.</strong> Phase 2 connects Claude to Microsoft Fabric. Today, a Power BI question costs Fabric capacity units. With Claude in the loop, the same question costs Fabric capacity units <em>plus</em> Anthropic tokens for the prompt, response, and any back-and-forth refinement. A user who runs one DAX query today might run six exploratory queries through Claude. Two meters spinning where one used to.</p>
+  </div>
+
+  <h4>Where it gets worse fast</h4>
+  <ul class="tight">
+    <li>Direct Lake column scans on wide fact tables. Capacity unit consumption scales with columns hit, and Claude may select more than a human would.</li>
+    <li>XMLA queries that materialize full result sets when a TOPN would suffice.</li>
+    <li>Long sessions that re-query the same data because earlier results fell out of context.</li>
+    <li>Default model set to Opus instead of Sonnet (roughly 5x token cost for usually no quality gain in domain work).</li>
+  </ul>
+
+  <h4>Cost guardrails before Phase 2 turns on</h4>
+
+  <table>
+    <thead><tr><th>Guardrail</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Phase 2 starts read-only</td><td>Consumption skills only. No authoring. Caps the blast radius.</td></tr>
+      <tr><td>Default model = Sonnet</td><td>Roughly five times cheaper than Opus per token. Most domain work does not need Opus.</td></tr>
+      <tr><td>Per-user monthly token budgets with alerts</td><td>Anthropic Compliance API supports this. Catches runaway sessions before quarterly surprise.</td></tr>
+      <tr><td>Fabric capacity unit alerts on the existing tenant</td><td>Set the alerts before turning Phase 2 on, not after.</td></tr>
+      <tr><td>Skills pull summaries, not raw rows</td><td>Consumption skills default to TOPN, aggregates, or measures rather than full table scans.</td></tr>
+      <tr><td>Three-user Fabric pilot first</td><td>Measure the cost delta in week one before any wider rollout. If the delta is bad, do not expand.</td></tr>
+      <tr><td>Approval hook on authoring skills</td><td>No Claude-driven model changes without a human in the loop.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Regulated and federal data</h2>
+
+  <div class="callout warn">
+    <p><strong>Claude Code is not HIPAA-covered today.</strong> Only the Claude chat product is covered under Anthropic's HIPAA-ready Enterprise plan. RS&amp;H does federal and FDOT engineering work. Any data governed by an FDOT Data Use Agreement, CUI, ITAR, or FedRAMP requirements is out of scope for Claude Code prompts and memory until the Working Group has a separate compliance conversation with Anthropic Sales.</p>
+  </div>
+
+  <h2>Security baseline</h2>
+
+  <p>
+    The single most important setting at enterprise scale is <code>disableBypassPermissionsMode: true</code>, deployed via Intune as a managed setting. Without it, any user can run <code>--dangerously-skip-permissions</code> and bypass every guardrail. Anthropic ships official Intune templates (PowerShell or ADMX, the standard Group Policy template format). RS&amp;H should use the ADMX route. This needs IT ownership identified before Phase 1 build.
+  </p>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- PHASE 2 + QUESTIONS                                           -->
+<!-- ============================================================ -->
+<section id="next" class="tab-panel">
+
+  <h2>Phase 2: Microsoft Fabric integration</h2>
+
+  <p>
+    RS&amp;H's Power BI reports already sit in Microsoft Fabric. Microsoft has open-sourced <code>microsoft/skills-for-fabric</code>, a collection of Claude-compatible skills that let agents read from and (when authorized) write to Fabric workloads. In Phase 2, Claude can directly query the Power BI semantic models, lakehouses, and warehouses RS&amp;H already runs.
+  </p>
+
+  <h4>What it gives RS&amp;H</h4>
+  <ul class="tight">
+    <li><strong>Read access first.</strong> Claude answers questions like "what does the FDOT M-I-4 dashboard say about Q1 utilization?" by querying the semantic model. No manual data export.</li>
+    <li><strong>Authoring access later.</strong> Under explicit human approval, Claude creates new semantic models, builds Spark ETL jobs, deploys reports. Hooked behind an approval gate.</li>
+    <li><strong>Per-user auth.</strong> Users authenticate as themselves through Entra ID. Their existing Fabric permissions apply. Claude inherits.</li>
+  </ul>
+
+  <h4>Recommended sequence</h4>
+  <ol class="tight">
+    <li>Pilot Fabric skills with the Tech domain only.</li>
+    <li>Read-only first. Install consumption skills only.</li>
+    <li>Per-domain auth boundaries already exist in Fabric. No new permission system needed.</li>
+    <li>Authoring skills require explicit per-use approval through a hook.</li>
+    <li>Roll to other domains after Tech proves the pattern. Finance is the natural second adopter.</li>
+  </ol>
+
+  <h2>Open questions for leadership</h2>
+
+  <ol>
+    <li><strong>Enterprise as the top-level shared layer.</strong> Confirming this is correct: Enterprise hosts the firm-wide CLAUDE.md and shared content; the other six are peer domains.</li>
+    <li><strong>Domain Steward nominees.</strong> Names for each of the seven domains. Tech first, others can follow.</li>
+    <li><strong>Federal and regulated-data classification policy.</strong> Does RS&amp;H have data governed by FDOT DUAs, CUI, ITAR, or FedRAMP? Affects what is in scope for Claude Code at all.</li>
+    <li><strong>Microsoft Fabric integration appetite for Phase 2.</strong> Green light to plan a three-user read-only pilot in the Tech domain, or hold until later?</li>
+    <li><strong>Intune ownership.</strong> Who at RS&amp;H IT manages Intune policy deployment? Needed before the security baseline goes live.</li>
+    <li><strong>Plugin source repo.</strong> Private GitHub or Azure DevOps? Both work; preference shapes the marketplace path.</li>
+    <li><strong>Existing tools per domain.</strong> Workday, ServiceNow, Salesforce, others. Each domain context file needs the inventory.</li>
+    <li><strong>Brand voice and writing standards.</strong> Any existing RS&amp;H style guide to ingest into the org CLAUDE.md?</li>
+  </ol>
+
+  <h2>Recommended next steps</h2>
+
+  <ol class="tight">
+    <li>Review this document and the framework primitives.</li>
+    <li>Confirm the five "asks of leadership" on the Overview tab.</li>
+    <li>Approve a one-week build window for Phase 1: org files, Tech full build, six domain scaffolds, two plugins, Intune managed settings.</li>
+    <li>Identify three to five Tech pilot users.</li>
+    <li>Schedule the four-week pilot retro cadence (15-minute weekly).</li>
+  </ol>
+
+  <div class="callout good">
+    <p><strong>What success looks like at the eight-week mark.</strong> Three to five Tech pilots are using the framework daily. Token spend per user is measurably lower than the baseline. The Working Group has a name. The Tech CLAUDE.md and shared memory are in active use. Domain Stewards for Finance and People are identified and reviewing their scaffolds. Phase 2 (Fabric) is scoped and gated.</p>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
+<!-- APPENDIX                                                      -->
+<!-- ============================================================ -->
+<section id="appendix" class="tab-panel">
+
+  <h2>Research and references</h2>
+
+  <p>
+    The framework design draws on published rollout playbooks, industry case studies, and official Microsoft and Anthropic documentation. The links below are the source set behind the recommendations in this brief, organized by topic.
+  </p>
+
+  <h3>Enterprise rollout and governance</h3>
+  <ul>
+    <li><a href="https://systemprompt.io/guides/claude-code-organisation-rollout" target="_blank" rel="noopener">Claude Code Enterprise Rollout Playbook for 50+ Developers (systemprompt.io)</a>: phased rollout metrics, failure modes, managed-settings guidance.</li>
+    <li><a href="https://www.truefoundry.com/blog/claude-code-governance-building-an-enterprise-usage-policy-from-scratch" target="_blank" rel="noopener">Claude Code Governance: Building an Enterprise Usage Policy from Scratch (TrueFoundry)</a>: disableBypassPermissionsMode, MDM via Intune, SIEM integration through the Compliance API.</li>
+    <li><a href="https://support.claude.com/en/articles/11845131-use-claude-code-with-your-team-or-enterprise-plan" target="_blank" rel="noopener">Use Claude Code with your Team or Enterprise plan (Anthropic Help)</a>.</li>
+    <li><a href="https://portkey.ai/blog/claude-code-best-practices-for-enterprise-teams/" target="_blank" rel="noopener">Claude Code best practices for enterprise teams (Portkey)</a>.</li>
+  </ul>
+
+  <h3>Cowork Enterprise and private marketplaces</h3>
+  <ul>
+    <li><a href="https://claude.com/blog/cowork-for-enterprise" target="_blank" rel="noopener">Making Claude Cowork ready for enterprise (Anthropic)</a>.</li>
+    <li><a href="https://claude.com/blog/cowork-plugins-across-enterprise" target="_blank" rel="noopener">Cowork and plugins for teams across the enterprise (Anthropic)</a>: private marketplace plus GitHub sync plus per-user provisioning.</li>
+    <li><a href="https://almcorp.com/blog/claude-cowork-plugins-enterprise-guide/" target="_blank" rel="noopener">Claude Cowork Plugins for Enterprise: 2026 Guide (ALM Corp)</a>.</li>
+    <li><a href="https://support.claude.com/en/articles/13837433-manage-claude-cowork-plugins-for-your-organization" target="_blank" rel="noopener">Manage Claude Cowork plugins for your organization (Anthropic Help)</a>.</li>
+    <li><a href="https://code.claude.com/docs/en/plugin-marketplaces" target="_blank" rel="noopener">Create and distribute a plugin marketplace (Claude Code Docs)</a>.</li>
+  </ul>
+
+  <h3>Plugin and skill ecosystem (reference and inspiration)</h3>
+  <ul>
+    <li><a href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank" rel="noopener">Awesome Claude Code</a>: curated skills, hooks, slash commands, agent orchestrators.</li>
+    <li><a href="https://github.com/travisvn/awesome-claude-skills" target="_blank" rel="noopener">Awesome Claude Skills</a>.</li>
+    <li><a href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener">Anthropic Best Practices for Claude Code</a>: canonical reference.</li>
+  </ul>
+
+  <h3>GSD (Get Shit Done) framework</h3>
+  <ul>
+    <li><a href="https://github.com/gsd-build/get-shit-done" target="_blank" rel="noopener">GSD on GitHub</a>: source for the context-engineering and sub-agent discipline RS&amp;H adopts as gsd-lite.</li>
+    <li><a href="https://gsd.build/" target="_blank" rel="noopener">GSD project site</a>.</li>
+    <li><a href="https://dev.to/alikazmidev/the-complete-beginners-guide-to-gsd-get-shit-done-framework-for-claude-code-24h0" target="_blank" rel="noopener">The Complete Beginner's Guide to GSD (DEV Community)</a>.</li>
+    <li><a href="https://hoangyell.com/get-shit-done-explained/" target="_blank" rel="noopener">Stop Context Rot: How GSD Powers the Ultimate 10x Agentic Engine</a>.</li>
+  </ul>
+
+  <h3>Boris Cherny's workflow (where the WAT lens comes from)</h3>
+  <ul>
+    <li><a href="https://newsletter.pragmaticengineer.com/p/building-claude-code-with-boris-cherny" target="_blank" rel="noopener">Building Claude Code with Boris Cherny (Pragmatic Engineer)</a>.</li>
+    <li><a href="https://howborisusesclaudecode.com/" target="_blank" rel="noopener">How Boris Uses Claude Code</a>.</li>
+    <li><a href="https://www.infoq.com/news/2026/01/claude-code-creator-workflow/" target="_blank" rel="noopener">Inside the Development Workflow of Claude Code's Creator (InfoQ)</a>.</li>
+    <li><a href="https://mindwiredai.com/2026/04/14/claude-code-creator-workflow-boris-cherny/" target="_blank" rel="noopener">How the Creator of Claude Code Uses It: 7 Workflow Secrets</a>.</li>
+  </ul>
+
+  <h3>Real org case studies</h3>
+  <ul>
+    <li><a href="https://www.datastudios.org/post/claude-in-the-enterprise-case-studies-of-ai-deployments-and-real-world-results-1" target="_blank" rel="noopener">Claude in the enterprise: case studies (DataStudios)</a>: covers NEC (30,000 employees with vertical training in finance, manufacturing, and government), Zapier (800-plus internal Claude agents), Altana (2-10x developer velocity gains).</li>
+  </ul>
+
+  <h3>Workflow patterns</h3>
+  <ul>
+    <li><a href="https://www.mindstudio.ai/blog/claude-code-agentic-workflow-patterns" target="_blank" rel="noopener">5 Claude Code Agentic Workflow Patterns (MindStudio)</a>: Sequential, Operator, Split-and-Merge, Agent Teams, Headless.</li>
+    <li><a href="https://code.claude.com/docs/en/agent-teams" target="_blank" rel="noopener">Orchestrate teams of Claude Code sessions (Anthropic Docs)</a>.</li>
+    <li><a href="https://www.anthropic.com/engineering/building-agents-with-the-claude-agent-sdk" target="_blank" rel="noopener">Building agents with the Claude Agent SDK (Anthropic)</a>.</li>
+  </ul>
+
+  <h3>SharePoint and OneDrive permissions (the access model)</h3>
+  <ul>
+    <li><a href="https://support.microsoft.com/en-us/office/manage-sharing-and-permissions-in-onedrive-and-sharepoint-0a36470f-d7fe-40a0-bd74-0ac6c1e13323" target="_blank" rel="noopener">Manage sharing and permissions in OneDrive and SharePoint (Microsoft)</a>.</li>
+    <li><a href="https://blogs.eyonic.com/how-to-manage-permissions-on-sharepoint-sites/" target="_blank" rel="noopener">How to Manage Permissions on Shared OneDrive Folders (Eyonic Blog)</a>: walkthrough of "Stop Inheriting Permissions."</li>
+    <li><a href="https://learn.microsoft.com/en-us/sharepoint/use-group-policy" target="_blank" rel="noopener">IT Admins: use OneDrive policies to control sync settings (Microsoft Learn)</a>.</li>
+  </ul>
+
+  <h3>Microsoft Intune MDM for Claude Code (the security baseline)</h3>
+  <ul>
+    <li><a href="https://github.com/anthropics/claude-code/tree/main/examples/mdm" target="_blank" rel="noopener">Anthropic's MDM templates for Claude Code</a>: official PowerShell and ADMX templates for Intune.</li>
+    <li><a href="https://code.claude.com/docs/en/settings" target="_blank" rel="noopener">Claude Code settings reference</a>.</li>
+    <li><a href="https://github.com/anthropics/claude-code/tree/main/examples/settings" target="_blank" rel="noopener">Claude Code settings examples</a>.</li>
+    <li><a href="https://support.claude.com/en/articles/12622667-enterprise-configuration" target="_blank" rel="noopener">Enterprise configuration for Claude Desktop (Anthropic Help)</a>.</li>
+  </ul>
+
+  <h3>Microsoft Fabric integration (Phase 2)</h3>
+  <ul>
+    <li><a href="https://github.com/microsoft/skills-for-fabric" target="_blank" rel="noopener">microsoft/skills-for-fabric (GitHub)</a>: open-source Claude-compatible skills for Fabric workloads.</li>
+    <li><a href="https://blog.fabric.microsoft.com/en-GB/blog/connecting-ai-agents-to-microsoft-fabric-with-graphql-and-the-model-context-protocol-mcp/" target="_blank" rel="noopener">Connecting AI Agents to Microsoft Fabric with GraphQL and MCP (Microsoft Fabric Blog)</a>.</li>
+    <li><a href="https://blog.fabric.microsoft.com/en-us/blog/introducing-fabric-mcp-public-preview" target="_blank" rel="noopener">Introducing Fabric MCP (Microsoft Fabric Blog)</a>.</li>
+    <li><a href="https://blog.fabric.microsoft.com/en-us/blog/agentic-fabric-how-mcp-is-turning-your-data-platform-into-an-ai-native-operating-system/" target="_blank" rel="noopener">Agentic Fabric: how MCP is turning your data platform into an AI-native operating system</a>.</li>
+    <li><a href="https://learn.microsoft.com/en-us/fabric/data-science/data-agent-mcp-server" target="_blank" rel="noopener">Data agent as Model Context Protocol server (Microsoft Learn)</a>.</li>
+    <li><a href="https://jiradett.medium.com/how-i-connected-claude-code-to-microsoft-fabric-and-started-vibe-coding-my-data-pipelines-from-a-44dd55abda51" target="_blank" rel="noopener">How I Connected Claude Code to Microsoft Fabric (Medium)</a>: practical walkthrough.</li>
+    <li><a href="https://learn.microsoft.com/en-us/power-bi/developer/mcp/remote-mcp-server-get-started" target="_blank" rel="noopener">Get started with the remote Power BI MCP server (Microsoft Learn)</a>.</li>
+    <li><a href="https://databear.com/claude-power-bi-mcp-integration/" target="_blank" rel="noopener">Claude Power BI MCP Integration (DataBear)</a>.</li>
+  </ul>
+
+  <h3>Regulated data and compliance</h3>
+  <ul>
+    <li><a href="https://support.claude.com/en/articles/13296973-hipaa-ready-enterprise-plans" target="_blank" rel="noopener">HIPAA-ready Enterprise plans (Anthropic Help)</a>. <strong>Important: Claude Code is NOT covered. Only Claude chat is.</strong></li>
+    <li><a href="https://builder.aws.com/content/3BDrMDCZK6WVhQEA2amur9zj51q/protecting-sensitive-data-when-using-claude-code-on-amazon-bedrock" target="_blank" rel="noopener">Protecting Sensitive Data When Using Claude Code on Amazon Bedrock (AWS)</a>.</li>
+    <li><a href="https://www.anthropic.com/news/healthcare-life-sciences" target="_blank" rel="noopener">Advancing Claude in healthcare and the life sciences (Anthropic)</a>.</li>
+  </ul>
+
+  <h3>Internal planning artifacts</h3>
+  <ul>
+    <li><a href="../_planning/2026-04-29-rsh-claude-framework-plan.md">Full framework specification (plan v3)</a>: the canonical spec behind this brief.</li>
+    <li><a href="../_planning/2026-04-29-handoff-context.md">Handoff context</a>: situation summary, decisions already made, open questions, and the link inventory above.</li>
+    <li><a href="../_learning/claude-framework-primitives.md">Primitives explainer (markdown source)</a>: long-form reference of the WAT model and every framework primitive.</li>
+  </ul>
+
+  <div class="callout">
+    <p><strong>How to use this list.</strong> The systemprompt.io playbook and the TrueFoundry governance article are the two highest-value reads for anyone setting up the Working Group. The DataStudios case studies are useful for leadership conversations. The Microsoft Fabric links are the entire homework set for Phase 2 planning.</p>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <span class="brand-line" aria-hidden="true">
+    <svg viewBox="0 0 800 4" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="4" fill="url(#rshGradient)"/>
+    </svg>
+  </span>
+  <p style="margin-top: 12px;">RS&amp;H CLAUDE Framework Overview &nbsp;&middot;&nbsp; Draft v1.0 &nbsp;&middot;&nbsp; Daunte Benjamin &nbsp;&middot;&nbsp; 2026-04-29</p>
+</footer>
+
+<script>
+  (function() {
+    var buttons = document.querySelectorAll('nav.tabs button');
+    var panels = document.querySelectorAll('section.tab-panel');
+    buttons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = btn.getAttribute('data-tab');
+        buttons.forEach(function(b) { b.classList.remove('active'); });
+        panels.forEach(function(p) { p.classList.remove('active'); });
+        btn.classList.add('active');
+        var panel = document.getElementById(target);
+        if (panel) panel.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
