@@ -284,7 +284,11 @@
   </p>
 
   <div class="callout">
-    <p><strong>Tool today, pattern forever.</strong> The current implementation is Claude Code. The framework is intentionally structured as an AI operating system rather than a Claude-only build, so the same context layers, governance, and access patterns can carry future tools (Gemini, internal models, vendor-specific agents) without rebuilding the scaffolding. Domains, memory, and access control are vendor-agnostic. Plugins, hooks, and skills are Claude Code's current vocabulary; equivalents exist in other ecosystems and the framework can absorb them.</p>
+    <p><strong>Who actually uses this.</strong> The framework is built for both flavors of Anthropic's enterprise license. Most RS&amp;H associates use <strong>Claude Cowork</strong> (the web app at claude.ai, with the option to connect to a local OneDrive folder). A smaller group of power users runs <strong>Claude Code</strong> (the CLI). Both read the same CLAUDE.md hierarchy, the same skills, the same memory files. The framework does not care which client opens it.</p>
+  </div>
+
+  <div class="callout">
+    <p><strong>Tool today, pattern forever.</strong> The current implementation is Anthropic's Claude. The framework is intentionally structured as an AI operating system rather than a Claude-only build, so the same context layers, governance, and access patterns can carry future tools (Gemini, internal models, vendor-specific agents) without rebuilding the scaffolding. Domains, memory, and access control are vendor-agnostic. Plugins, hooks, and skills are Claude's current vocabulary; equivalents exist in other ecosystems and the framework can absorb them.</p>
   </div>
 
   <h2>Why this exists</h2>
@@ -671,7 +675,7 @@ Leadership-Claude/  (Teams site 4)
   </table>
 
   <div class="callout">
-    <p><strong>What an associate experiences.</strong> A Tech analyst opens Claude Code in <code>technology/projects/DA0012-backlog/</code>. Three CLAUDE.md files auto-load in order: org, Tech, project. Tech's <code>shared.md</code> memory loads. Tech's coding standards load when the analyst writes SQL. Tech's PII rules load when the prompt mentions a project code. The analyst types one question and gets an answer that respects every layer of context above.</p>
+    <p><strong>What an associate experiences.</strong> A Tech analyst opens Claude (Cowork in the browser, or Code at the CLI) pointed at <code>technology/projects/DA0012-backlog/</code>. Three CLAUDE.md files auto-load in order: org, Tech, project. Tech's <code>shared.md</code> memory loads. Tech's coding standards load when the analyst writes SQL. Tech's PII rules load when the prompt mentions a project code. The analyst types one question and gets an answer that respects every layer of context above.</p>
   </div>
 
   <h3>Layered loading, visualized</h3>
@@ -689,7 +693,7 @@ Leadership-Claude/  (Teams site 4)
       </defs>
 
       <rect x="120" y="15" width="480" height="55" rx="4" fill="#ebebed" stroke="#cfd5d9" stroke-width="1.5"/>
-      <text x="360" y="38" text-anchor="middle" font-size="13" fill="#103254" font-weight="600">Associate opens Claude Code in</text>
+      <text x="360" y="38" text-anchor="middle" font-size="13" fill="#103254" font-weight="600">Associate opens Claude (Cowork or Code) in</text>
       <text x="360" y="58" text-anchor="middle" font-size="13" fill="#215eac" font-family="ui-monospace, Consolas, Menlo, monospace">technology/projects/DA0012-backlog/</text>
 
       <line x1="360" y1="75" x2="360" y2="100" stroke="#415465" stroke-width="1.5" marker-end="url(#arr)"/>
@@ -1012,9 +1016,11 @@ Leadership-Claude/  (Teams site 4)
 
   <h2>30-minute onboarding</h2>
 
+  <p>Steps differ slightly by client. Cowork users (most associates) onboard through the browser. Code users (power users) install the CLI.</p>
+
   <ol class="tight">
-    <li>Install Claude Code and sign in.</li>
-    <li>Confirm OneDrive sync of the RSandH-Claude folder is up.</li>
+    <li><strong>Cowork users:</strong> sign in to claude.ai with your enterprise SSO, enable the personal Claude connection, and point it at your local <code>RSandH-Claude/</code> OneDrive folder. <strong>Code users:</strong> install the Claude Code CLI and run <code>claude</code> from inside the <code>RSandH-Claude/</code> folder.</li>
+    <li>Confirm OneDrive sync of the RSandH-Claude folder is up to date.</li>
     <li>Install the org plugin and the relevant domain plugin from the marketplace.</li>
     <li>Read the org onboarding checklist (5 min).</li>
     <li>Skim the org CLAUDE.md and the domain CLAUDE.md (5 min).</li>
