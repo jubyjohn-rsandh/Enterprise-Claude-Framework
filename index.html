@@ -268,6 +268,7 @@
   <button data-tab="rollout">Rollout</button>
   <button data-tab="risks">Risks &amp; Lessons</button>
   <button data-tab="next">Phase 2 &amp; Questions</button>
+  <button data-tab="mcp">MCP Integrations</button>
   <button data-tab="appendix">Appendix</button>
 </nav>
 
@@ -301,9 +302,6 @@
     <ul style="margin-bottom:0;">
       <li>Every user re-pastes the same RS&amp;H context into every chat. Token spend compounds.</li>
       <li>Skills get reinvented per user. No shared learnings, no quality gate.</li>
-      <li>Memory of past decisions evaporates between people. Same questions get re-litigated.</li>
-      <li>Permission posture drifts. Some users on safe defaults, others bypassing prompts.</li>
-      <li>New hires onboard cold. Nothing inherits between sessions or between people.</li>
       <li>Sensitive data leaks become a question of when, not if.</li>
     </ul>
   </div>
@@ -963,10 +961,6 @@ Leadership-Claude/  (Teams site 4)
     </tbody>
   </table>
 
-  <div class="callout">
-    <p><strong>What leadership commits to.</strong> Approve the build window. Confirm Working Group seats (three names). Direct on the regulated-data classification question. Identify three to five Tech pilot users from current heavy Claude users. Total time commitment for the CTO over the month: under two hours.</p>
-  </div>
-
   <h2>Phased rollout</h2>
 
   <p>
@@ -1262,6 +1256,50 @@ Leadership-Claude/  (Teams site 4)
 </section>
 
 <!-- ============================================================ -->
+<!-- MCP INTEGRATIONS                                              -->
+<!-- ============================================================ -->
+<section id="mcp" class="tab-panel">
+
+  <h2>MCP — connecting Claude to your existing tech stack</h2>
+
+  <p>
+    MCP stands for <strong>Model Context Protocol</strong>. It is an open standard published by Anthropic that lets Claude connect to external systems — databases, APIs, SaaS tools — the same way a web browser connects to websites. Instead of copying data into a prompt, Claude calls an MCP server that knows how to talk to the system, and gets back structured results it can reason over.
+  </p>
+
+  <div class="callout">
+    <p><strong>Simple analogy.</strong> A tool like <code>Read</code> lets Claude read files on your computer. An MCP server lets Claude "read" from SharePoint, Microsoft Fabric, or any system that has an MCP connector — without ever leaving Claude and without manual data export.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th style="width:28%;">System</th><th style="width:36%;">What the MCP connection gives Claude</th><th>Status at RS&amp;H</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Microsoft Fabric / Power BI</strong></td>
+        <td>Query semantic models, lakehouses, and warehouses directly. Claude can answer "what does the Q1 utilization dashboard say?" by reading the live model — no export needed.</td>
+        <td>Available via <code>microsoft/skills-for-fabric</code> and the Fabric MCP public preview. Planned for Phase 2.</td>
+      </tr>
+      <tr>
+        <td><strong>SharePoint / OneDrive</strong></td>
+        <td>Read and search documents, lists, and sites. Claude can pull a policy document or a project brief without the user locating and pasting it.</td>
+        <td>Supported today via the Microsoft 365 MCP connector. Already in scope for the framework access model.</td>
+      </tr>
+      <tr>
+        <td><strong>Internal APIs</strong></td>
+        <td>Any system with a REST or GraphQL API can be wrapped in a lightweight MCP server. Claude calls it like a built-in tool.</td>
+        <td>Custom MCP server pattern is in the Phase 2 research backlog.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout good">
+    <p><strong>How it fits the framework.</strong> MCP servers are bundled into plugins. A Tech plugin that includes the Fabric MCP server means every Tech licensee who installs the plugin automatically gets Claude's ability to query Fabric — no individual setup, no manual data export. Update the plugin once, every licensee gets the new server.</p>
+  </div>
+
+</section>
+
+<!-- ============================================================ -->
 <!-- APPENDIX                                                      -->
 <!-- ============================================================ -->
 <section id="appendix" class="tab-panel">
@@ -1318,53 +1356,6 @@ Leadership-Claude/  (Teams site 4)
       <tr><td><code>OnStop</code></td><td>When the session ends</td><td>Final audit log entries</td></tr>
     </tbody>
   </table>
-
-  <h3>MCP — connecting Claude to your existing tech stack</h3>
-
-  <p>
-    MCP stands for <strong>Model Context Protocol</strong>. It is an open standard (published by Anthropic) that lets Claude connect to external systems — databases, APIs, SaaS tools — the same way a web browser connects to websites. Instead of copying data into a prompt, Claude calls an MCP server that knows how to talk to the system, and gets back structured results it can reason over.
-  </p>
-
-  <div class="callout">
-    <p><strong>Simple analogy.</strong> A tool like <code>Read</code> lets Claude read files on your computer. An MCP server lets Claude "read" from SharePoint, Microsoft Fabric, ServiceNow, or any system that has an MCP connector — without ever leaving Claude and without manual data export.</p>
-  </div>
-
-  <table>
-    <thead>
-      <tr><th style="width:28%;">System</th><th style="width:30%;">What the MCP connection gives Claude</th><th>Status at RS&amp;H</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Microsoft Fabric / Power BI</strong></td>
-        <td>Query semantic models, lakehouses, and warehouses directly. Claude can answer "what does the Q1 utilization dashboard say?" by reading the live model — no export needed.</td>
-        <td>Available via <code>microsoft/skills-for-fabric</code> and the Fabric MCP public preview. Planned for Phase 2.</td>
-      </tr>
-      <tr>
-        <td><strong>SharePoint / OneDrive</strong></td>
-        <td>Read and search documents, lists, and sites. Claude can pull a policy document or a project brief without the user locating and pasting it.</td>
-        <td>Supported today via the Microsoft 365 MCP connector. Already in scope for the framework access model.</td>
-      </tr>
-      <tr>
-        <td><strong>ServiceNow</strong></td>
-        <td>Read ticket queues, CI records, change requests. Claude can draft a change request or summarize open incidents against a service.</td>
-        <td>MCP connector available. Integration appetite TBD by IT.</td>
-      </tr>
-      <tr>
-        <td><strong>Salesforce / CRM</strong></td>
-        <td>Read account records, opportunity history, contact data. Claude can pull account context before a client call or draft a follow-up.</td>
-        <td>MCP connector available. BDO domain is the natural owner.</td>
-      </tr>
-      <tr>
-        <td><strong>Internal APIs</strong></td>
-        <td>Any system with a REST or GraphQL API can be wrapped in a lightweight MCP server. Claude calls it like a built-in tool.</td>
-        <td>Custom MCP server pattern is in the Phase 2 research backlog.</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="callout good">
-    <p><strong>How it fits the framework.</strong> MCP servers are bundled into plugins. A Tech plugin that includes the Fabric MCP server means every Tech licensee who installs the plugin automatically gets Claude's ability to query Fabric — no individual setup, no manual token pasting. Update the plugin, every licensee gets the new server.</p>
-  </div>
 
   <h2>Research and references</h2>
 
