@@ -7,7 +7,7 @@
 <style>
   :root {
     /* RS&H brand palette */
-    -- ink: #103254;          /* Navy, body text */
+    --ink: #103254;          /* Navy, body text */
     --ink-soft: #415465;     /* Dark Gray, secondary text */
     --paper: #ffffff;
     --accent: #215eac;       /* Genuine Candor Blue, primary */
@@ -259,13 +259,12 @@
       <rect width="800" height="8" fill="url(#rshGradient)"/>
     </svg>
   </span>
-  <p class="meta">Daunte Benjamin &nbsp;&middot;&nbsp; 2026-04-29</p>
+  <p class="meta">Enterprise Technology &nbsp;&middot;&nbsp; 2026-04-29</p>
 </header>
 
 <nav class="tabs" role="tablist">
   <button class="active" data-tab="overview">Overview</button>
   <button data-tab="architecture">Architecture</button>
-  <button data-tab="primitives">Extra Learning</button>
   <button data-tab="rollout">Rollout</button>
   <button data-tab="risks">Risks &amp; Lessons</button>
   <button data-tab="next">Phase 2 &amp; Questions</button>
@@ -280,11 +279,11 @@
 <section id="overview" class="tab-panel active">
 
   <p class="lede">
-    The RS&amp;H Enterprise Claude Framework is a structured way to govern, distribute, and scale Claude Code across the firm. It defines where context lives, who owns what, how skills and tools are shared, and how the firm reduces redundant token spend as licenses grow.
+    The RS&amp;H Enterprise Claude Framework is a structured way to govern, distribute, and scale Claude across the firm. It defines where context lives, who owns what, how skills and tools are shared, and how the firm reduces redundant token spend as licenses grow.
   </p>
 
   <div class="callout">
-    <p><strong>Who actually uses this.</strong> The framework is built for both flavors of Anthropic's enterprise license. Most RS&amp;H associates use <strong>Claude Cowork</strong> (the web app at claude.ai, with the option to connect to a local OneDrive folder). A smaller group of power users runs <strong>Claude Code</strong> (the CLI). Both read the same CLAUDE.md hierarchy, the same skills, the same memory files. The framework does not care which client opens it.</p>
+    <p><strong>Who actually uses this.</strong> The framework is built for both flavors of Anthropic's enterprise license. Most RS&amp;H associates use <strong>Claude Cowork</strong>. A smaller group of power users runs <strong>Claude Code</strong> (the CLI). Both read the same CLAUDE.md hierarchy, the same skills, the same memory files. The framework does not care which client opens it.</p>
   </div>
 
   <div class="callout">
@@ -323,7 +322,7 @@
   <h2>What it does</h2>
 
   <ul>
-    <li><strong>Educates</strong> the firm on the core primitives so users speak a common vocabulary.</li>
+    <li><strong>Educates</strong> the firm on core AI concepts so everyone speaks the same language — what a skill is, what a tool does, how context loads, and why it matters.</li>
     <li><strong>Reduces token spend significantly</strong> by replacing pasted-in context with auto-loaded files and on-demand skills.</li>
     <li><strong>Sets governance</strong> so licenses do not fragment as the count grows.</li>
     <li><strong>Scales to seven domains</strong> using one shared scaffold. Tech proves the pattern; the others adopt it.</li>
@@ -331,7 +330,7 @@
 
   <h2>What this is not</h2>
 
-  <p>Boundaries help. The framework is:</p>
+  <p>The framework is:</p>
 
   <ul>
     <li><strong>Not a chatbot for clients.</strong> Internal use only. Client-facing AI is a separate decision with separate guardrails.</li>
@@ -358,12 +357,8 @@
         <td>The three context layers, the seven domains, the SharePoint access model, what every framework file does, and what one domain folder looks like inside.</td>
       </tr>
       <tr>
-        <td><strong>Extra Learning</strong></td>
-        <td>The shared vocabulary. What tools, agents, workflows, skills, hooks, memory, and plugins each mean. The WAT mental model that underpins everything.</td>
-      </tr>
-      <tr>
         <td><strong>Rollout</strong></td>
-        <td>Phased plan from a three-to-five-person Tech pilot to org-wide. Hard gating metrics at each phase exit. Governance roles. Onboarding. Token economics.</td>
+        <td>Phased rollout from a small Tech pilot to org-wide. Governance roles. Onboarding. Token economics.</td>
       </tr>
       <tr>
         <td><strong>Risks &amp; Lessons</strong></td>
@@ -371,7 +366,7 @@
       </tr>
       <tr>
         <td><strong>Phase 2 &amp; Questions</strong></td>
-        <td>Microsoft Fabric integration plan via <code>microsoft/skills-for-fabric</code>. The open questions that need leadership direction.</td>
+        <td>The open questions that need leadership direction and items for Phase 2 planning.</td>
       </tr>
     </tbody>
   </table>
@@ -381,7 +376,7 @@
   <div class="callout warn">
     <p>Three things to keep in front of mind. Full detail in the Risks tab.</p>
     <ul style="margin-bottom: 0;">
-      <li><strong>Pilot discipline matters most.</strong> Orgs that fail skip phases or skip the one-week pairing rotation. We will not.</li>
+      <li><strong>Pilot discipline matters most.</strong> Orgs that fail rush past the pilot phase before the one-week pairing discipline takes hold. The phased approach exists for a reason.</li>
       <li><strong>Phase 2 Fabric doubles the cost meter without guardrails.</strong> Read-only first, Sonnet by default, per-user budgets, and a three-user pilot before any expansion.</li>
       <li><strong>Claude Code is not HIPAA-covered today.</strong> Federal, FDOT, CUI, and ITAR data require a separate compliance conversation with Anthropic before exposure.</li>
     </ul>
@@ -408,10 +403,8 @@
 
   <ol>
     <li>Confirm that <strong>Enterprise functions as the top-level shared layer</strong> (everyone sees the org-wide reports there).</li>
-    <li>Confirm <strong>Tech as the pilot domain</strong> for the first build cycle.</li>
     <li>Approve the <strong>security baseline</strong> (Intune-deployed managed settings, including <code>disableBypassPermissionsMode</code>).</li>
     <li>Direct on the <strong>federal and FDOT data classification policy</strong>. Claude Code is not HIPAA-covered today and federal-data exposure needs a separate Anthropic conversation.</li>
-    <li>Direct on the <strong>Microsoft Fabric integration appetite</strong> for Phase 2.</li>
   </ol>
 
 </section>
@@ -797,10 +790,8 @@ Leadership-Claude/  (Teams site 4)
 
 </section>
 
-<!-- ============================================================ -->
-<!-- EXTRA LEARNING                                                -->
-<!-- ============================================================ -->
-<section id="primitives" class="tab-panel">
+<!-- primitives content moved to Appendix -->
+<section id="primitives" class="tab-panel" style="display:none!important;">
 
   <h2>The mental model: WAT</h2>
 
@@ -947,22 +938,22 @@ Leadership-Claude/  (Teams site 4)
       <tr>
         <td><strong>Week 1<br>(Build)</strong></td>
         <td>Org CLAUDE.md and Tech CLAUDE.md filled in. Six other domain scaffolds created. Two starter plugins bootstrapped (<code>rsandh-org-plugin</code>, <code>rsandh-tech-plugin</code>). Intune managed-settings rollout scheduled with IT.</td>
-        <td>Daunte builds. IT scopes the Intune deployment.</td>
+        <td>Enterprise Technology builds. IT scopes the Intune deployment.</td>
       </tr>
       <tr>
         <td><strong>End of Week 1</strong></td>
         <td>Working Group named (3 members). Three to five Tech pilot users identified. Brand voice, security, and naming context files reviewed and approved.</td>
-        <td>Leadership confirms Working Group. Daunte identifies pilots.</td>
+        <td>Leadership confirms Working Group. Enterprise Technology identifies pilots.</td>
       </tr>
       <tr>
         <td><strong>Week 2<br>(Pilot start)</strong></td>
         <td>Pilots onboard one by one (30-min session each). Pilot Slack or Teams channel opens. First weekly retro on Friday.</td>
-        <td>Daunte runs onboarding. Pilots test daily.</td>
+        <td>Enterprise Technology runs onboarding. Pilots test daily.</td>
       </tr>
       <tr>
         <td><strong>Week 3<br>(Pilot iterate)</strong></td>
         <td>Tech <code>shared.md</code> memory starts accumulating real entries. First skill promoted from local to plugin. First pilot retro feedback applied.</td>
-        <td>Pilots use it. Daunte distills.</td>
+        <td>Pilots use it. Enterprise Technology distills.</td>
       </tr>
       <tr>
         <td><strong>Week 4<br>(Pilot exit)</strong></td>
@@ -979,7 +970,7 @@ Leadership-Claude/  (Teams site 4)
   <h2>Phased rollout</h2>
 
   <p>
-    Pacing follows industry-validated patterns from large-scale Claude rollouts. Each phase has a hard exit metric. Skipping phases is the most common cause of failed rollouts. RS&amp;H does not skip phases.
+    Pacing follows industry-validated patterns from large-scale Claude rollouts. Each phase has clear success criteria before moving to the next — this is the single biggest factor in whether enterprise AI rollouts succeed or stall.
   </p>
 
   <table>
@@ -1235,7 +1226,7 @@ Leadership-Claude/  (Teams site 4)
       </tr>
       <tr>
         <td><strong>SharePoint silo verification</strong></td>
-        <td>Daunte's commitment from the meeting. Test that a user restricted to one domain folder genuinely cannot read or have Claude access another domain folder. Verify the access model behaves as designed before Phase 1 expands beyond pilots.</td>
+        <td>Test that a user restricted to one domain folder genuinely cannot read or have Claude access another domain folder. Verify the access model behaves as designed before Phase 1 expands beyond pilots.</td>
       </tr>
     </tbody>
   </table>
@@ -1248,7 +1239,6 @@ Leadership-Claude/  (Teams site 4)
     <li><strong>Enterprise as the top-level shared layer.</strong> Confirming this is correct: Enterprise hosts the firm-wide CLAUDE.md and shared content; the other six are peer domains.</li>
     <li><strong>Domain Steward nominees.</strong> Names for each of the seven domains. Tech first, others can follow.</li>
     <li><strong>Federal and regulated-data classification policy.</strong> Does RS&amp;H have data governed by FDOT DUAs, CUI, ITAR, or FedRAMP? Affects what is in scope for Claude Code at all.</li>
-    <li><strong>Microsoft Fabric integration appetite for Phase 2.</strong> Green light to plan a three-user read-only pilot in the Tech domain, or hold until later?</li>
     <li><strong>Intune ownership.</strong> Who at RS&amp;H IT manages Intune policy deployment? Needed before the security baseline goes live.</li>
     <li><strong>Plugin source repo.</strong> Private GitHub or Azure DevOps? Both work; preference shapes the marketplace path.</li>
     <li><strong>Existing tools per domain.</strong> Workday, ServiceNow, Salesforce, others. Each domain context file needs the inventory.</li>
@@ -1275,6 +1265,106 @@ Leadership-Claude/  (Teams site 4)
 <!-- APPENDIX                                                      -->
 <!-- ============================================================ -->
 <section id="appendix" class="tab-panel">
+
+  <h2>Lexicon / Quick Reference</h2>
+
+  <p>Plain-language definitions for the terms used throughout this framework. Use this as a reference when onboarding new users or when a term comes up in conversation.</p>
+
+  <h3>The WAT mental model</h3>
+
+  <p>Every Claude capability maps to one of three primitives — or a piece of glue that holds them together. When someone asks "is that a skill or a tool?" they are using this lens.</p>
+
+  <table>
+    <thead>
+      <tr><th>Term</th><th>What it is</th><th>Plain-language summary</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Workflow</strong></td><td>A repeatable, parameterized procedure</td><td>The recipe — how to do a specific task step by step</td></tr>
+      <tr><td><strong>Agent</strong></td><td>A specialized role with its own context window</td><td>The worker — a sub-Claude spun up for a focused job</td></tr>
+      <tr><td><strong>Tool</strong></td><td>A specific capability Claude can call</td><td>The verb — what Claude can do (read a file, run a script)</td></tr>
+      <tr><td><strong>Skill</strong></td><td>On-demand knowledge or workflow</td><td>The reference — pulled in when relevant, zero cost when not</td></tr>
+      <tr><td><strong>Hook</strong></td><td>A script that fires automatically on a specific event</td><td>The policy — runs every time, no Claude reasoning needed</td></tr>
+      <tr><td><strong>Memory</strong></td><td>Persistent context across sessions</td><td>The institutional knowledge — decisions that survive between conversations</td></tr>
+      <tr><td><strong>Plugin</strong></td><td>A bundled, distributable package</td><td>The container — skills, hooks, tools, and agents in one installable unit</td></tr>
+      <tr><td><strong>CLAUDE.md</strong></td><td>Always-loaded context file</td><td>The foundation — firm rules, domain rules, and user preferences that load every session automatically</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Built-in tools</h3>
+
+  <table>
+    <thead>
+      <tr><th style="width:20%;">Tool</th><th>What it does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>Read</code></td><td>Open a file and read its contents.</td></tr>
+      <tr><td><code>Write</code></td><td>Create a new file.</td></tr>
+      <tr><td><code>Edit</code></td><td>Modify an existing file in place.</td></tr>
+      <tr><td><code>Bash</code></td><td>Run a shell command (e.g. <code>git status</code>, <code>python script.py</code>).</td></tr>
+      <tr><td><code>Grep</code></td><td>Search for text patterns inside files.</td></tr>
+      <tr><td><code>Glob</code></td><td>Find files by name pattern (e.g. all <code>.sql</code> files in a folder).</td></tr>
+      <tr><td><code>WebFetch</code></td><td>Fetch a web URL and return its contents.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Hook event types</h3>
+
+  <table>
+    <thead><tr><th>Event</th><th>Fires when</th><th>Best for</th></tr></thead>
+    <tbody>
+      <tr><td><code>PreToolUse</code></td><td>Before any tool call</td><td>Policy checks, PII scanning before a file is read or written</td></tr>
+      <tr><td><code>PostToolUse</code></td><td>After any tool call</td><td>Audit logging</td></tr>
+      <tr><td><code>OnPromptSubmit</code></td><td>When a user submits a prompt</td><td>Prompt-level scanning</td></tr>
+      <tr><td><code>OnStop</code></td><td>When the session ends</td><td>Final audit log entries</td></tr>
+    </tbody>
+  </table>
+
+  <h3>MCP — connecting Claude to your existing tech stack</h3>
+
+  <p>
+    MCP stands for <strong>Model Context Protocol</strong>. It is an open standard (published by Anthropic) that lets Claude connect to external systems — databases, APIs, SaaS tools — the same way a web browser connects to websites. Instead of copying data into a prompt, Claude calls an MCP server that knows how to talk to the system, and gets back structured results it can reason over.
+  </p>
+
+  <div class="callout">
+    <p><strong>Simple analogy.</strong> A tool like <code>Read</code> lets Claude read files on your computer. An MCP server lets Claude "read" from SharePoint, Microsoft Fabric, ServiceNow, or any system that has an MCP connector — without ever leaving Claude and without manual data export.</p>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th style="width:28%;">System</th><th style="width:30%;">What the MCP connection gives Claude</th><th>Status at RS&amp;H</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Microsoft Fabric / Power BI</strong></td>
+        <td>Query semantic models, lakehouses, and warehouses directly. Claude can answer "what does the Q1 utilization dashboard say?" by reading the live model — no export needed.</td>
+        <td>Available via <code>microsoft/skills-for-fabric</code> and the Fabric MCP public preview. Planned for Phase 2.</td>
+      </tr>
+      <tr>
+        <td><strong>SharePoint / OneDrive</strong></td>
+        <td>Read and search documents, lists, and sites. Claude can pull a policy document or a project brief without the user locating and pasting it.</td>
+        <td>Supported today via the Microsoft 365 MCP connector. Already in scope for the framework access model.</td>
+      </tr>
+      <tr>
+        <td><strong>ServiceNow</strong></td>
+        <td>Read ticket queues, CI records, change requests. Claude can draft a change request or summarize open incidents against a service.</td>
+        <td>MCP connector available. Integration appetite TBD by IT.</td>
+      </tr>
+      <tr>
+        <td><strong>Salesforce / CRM</strong></td>
+        <td>Read account records, opportunity history, contact data. Claude can pull account context before a client call or draft a follow-up.</td>
+        <td>MCP connector available. BDO domain is the natural owner.</td>
+      </tr>
+      <tr>
+        <td><strong>Internal APIs</strong></td>
+        <td>Any system with a REST or GraphQL API can be wrapped in a lightweight MCP server. Claude calls it like a built-in tool.</td>
+        <td>Custom MCP server pattern is in the Phase 2 research backlog.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout good">
+    <p><strong>How it fits the framework.</strong> MCP servers are bundled into plugins. A Tech plugin that includes the Fabric MCP server means every Tech licensee who installs the plugin automatically gets Claude's ability to query Fabric — no individual setup, no manual token pasting. Update the plugin, every licensee gets the new server.</p>
+  </div>
 
   <h2>Research and references</h2>
 
@@ -1389,7 +1479,7 @@ Leadership-Claude/  (Teams site 4)
       <rect width="800" height="4" fill="url(#rshGradient)"/>
     </svg>
   </span>
-  <p style="margin-top: 12px;">RS&amp;H Enterprise Claude Framework Overview &nbsp;&middot;&nbsp; Draft v1.0 &nbsp;&middot;&nbsp; Daunte Benjamin &nbsp;&middot;&nbsp; 2026-04-29</p>
+  <p style="margin-top: 12px;">RS&amp;H Enterprise Claude Framework Overview &nbsp;&middot;&nbsp; Draft v1.0 &nbsp;&middot;&nbsp; 2026-04-29</p>
 </footer>
 
 <script>
